@@ -1,0 +1,107 @@
+import React, { useState } from 'react'
+import styled from 'styled-components'
+
+import { AuthButton } from './auth-button'
+import { colors, audioFeaturesDescriptions } from '../consts'
+
+const Panel = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  padding: 32px 16px;
+  color: ${colors.spotifyBlack};
+  background: ${colors.white};
+  border-left: 4px solid ${colors.gray};
+  z-index: 1;
+  pointer-events: ${({ isOpen }) => (isOpen ? 'all' : 'none')};
+  transform: translateX(${({ isOpen }) => (isOpen ? '0' : '100%')});
+  transition: transform 0.2s;
+  overflow: auto;
+
+  ${AuthButton} {
+    margin: 8px auto;
+  }
+`
+
+const CloseButton = styled.div`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-weight: 900;
+  font-size: 20px;
+  cursor: pointer;
+`
+
+const PanelHeader = styled.h4`
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0;
+`
+
+const Label = styled.h2`
+  font-size: 14px;
+  margin: 0;
+  font-weight: 600;
+`
+
+const Description = styled.p`
+  font-size: 12px;
+  margin: 0;
+`
+
+const Divider = styled.div`
+  height: 4px;
+  width: 100%;
+  margin: 16px 0;
+  background-color: ${colors.spotifyGreen};
+`
+
+const Background = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: ${colors.spotifyBlack};
+  opacity: ${({ isOpen }) => (isOpen ? 0.7 : 0)};
+  pointer-events: ${({ isOpen }) => (isOpen ? 'all' : 'none')};
+  transition: opacity 0.2s;
+  cursor: pointer;
+`
+
+export const InfoPanel = ({ isOpen, close = () => {} }) => {
+  return (
+    <>
+      <Panel isOpen={isOpen}>
+        <CloseButton onClick={close}>X</CloseButton>
+        <PanelHeader>Info</PanelHeader>
+        <AuthButton />
+        <Label>How to use:</Label>
+        <Description>TODO add this</Description>
+        <Divider />
+        {Object.values(audioFeaturesDescriptions).map(({ label, description }) => (
+          <>
+            <Label>{label}</Label>
+            <Description>{description}</Description>
+          </>
+        ))}
+      </Panel>
+      <Background isOpen={isOpen} onClick={close} />
+    </>
+  )
+}
+
+const InfoIcon = styled.img.attrs(() => ({
+  src: '/info-icon.png',
+}))`
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+`
+
+export const InfoPanelButton = ({ onClick, className }) => {
+  return <InfoIcon onClick={onClick} className={className} />
+}

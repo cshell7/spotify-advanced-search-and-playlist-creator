@@ -1,9 +1,9 @@
 {
-  "short_name": "Spotify API Test App",
-  "name": "A app to test the spotify API",
+  "short_name": "Spotify Adv. Search",
+  "name": "Spotify Advanced Search and Playlist Creator",
   "icons": [],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#1DB954",
+  "background_color": "#191414"
 }
