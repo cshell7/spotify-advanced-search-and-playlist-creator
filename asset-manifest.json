@@ -1,19 +1,20 @@
 {
   "files": {
-    "main.js": "/spotify-advanced-search-and-playlist-creator/static/js/main.f22d7315.chunk.js",
-    "main.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/main.f22d7315.chunk.js.map",
+    "main.js": "/spotify-advanced-search-and-playlist-creator/static/js/main.f20170d6.chunk.js",
+    "main.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/main.f20170d6.chunk.js.map",
     "runtime-main.js": "/spotify-advanced-search-and-playlist-creator/static/js/runtime-main.a66d1936.js",
     "runtime-main.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/runtime-main.a66d1936.js.map",
-    "static/js/2.bf183f6b.chunk.js": "/spotify-advanced-search-and-playlist-creator/static/js/2.bf183f6b.chunk.js",
-    "static/js/2.bf183f6b.chunk.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/2.bf183f6b.chunk.js.map",
+    "static/js/2.bb51210f.chunk.js": "/spotify-advanced-search-and-playlist-creator/static/js/2.bb51210f.chunk.js",
+    "static/js/2.bb51210f.chunk.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/2.bb51210f.chunk.js.map",
     "index.html": "/spotify-advanced-search-and-playlist-creator/index.html",
-    "precache-manifest.aebdf593fc400096ad43f1c0c00c4a41.js": "/spotify-advanced-search-and-playlist-creator/precache-manifest.aebdf593fc400096ad43f1c0c00c4a41.js",
+    "precache-manifest.f0a7cee5f33560bba3c3b2538c2c801c.js": "/spotify-advanced-search-and-playlist-creator/precache-manifest.f0a7cee5f33560bba3c3b2538c2c801c.js",
     "service-worker.js": "/spotify-advanced-search-and-playlist-creator/service-worker.js",
-    "static/js/2.bf183f6b.chunk.js.LICENSE.txt": "/spotify-advanced-search-and-playlist-creator/static/js/2.bf183f6b.chunk.js.LICENSE.txt"
+    "static/js/2.bb51210f.chunk.js.LICENSE.txt": "/spotify-advanced-search-and-playlist-creator/static/js/2.bb51210f.chunk.js.LICENSE.txt",
+    "static/media/spotify-logo.png": "/spotify-advanced-search-and-playlist-creator/static/media/spotify-logo.31bad8d4.png"
   },
   "entrypoints": [
     "static/js/runtime-main.a66d1936.js",
-    "static/js/2.bf183f6b.chunk.js",
-    "static/js/main.f22d7315.chunk.js"
+    "static/js/2.bb51210f.chunk.js",
+    "static/js/main.f20170d6.chunk.js"
   ]
 }
