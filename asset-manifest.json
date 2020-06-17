@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/spotify-advanced-search-and-playlist-creator/static/js/main.569b3252.chunk.js",
-    "main.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/main.569b3252.chunk.js.map",
+    "main.js": "/spotify-advanced-search-and-playlist-creator/static/js/main.1bec06b1.chunk.js",
+    "main.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/main.1bec06b1.chunk.js.map",
     "runtime-main.js": "/spotify-advanced-search-and-playlist-creator/static/js/runtime-main.a66d1936.js",
     "runtime-main.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/runtime-main.a66d1936.js.map",
     "static/js/2.6936559b.chunk.js": "/spotify-advanced-search-and-playlist-creator/static/js/2.6936559b.chunk.js",
     "static/js/2.6936559b.chunk.js.map": "/spotify-advanced-search-and-playlist-creator/static/js/2.6936559b.chunk.js.map",
     "index.html": "/spotify-advanced-search-and-playlist-creator/index.html",
-    "precache-manifest.0a7380429a6f313b7c2d2f486c4d75f1.js": "/spotify-advanced-search-and-playlist-creator/precache-manifest.0a7380429a6f313b7c2d2f486c4d75f1.js",
+    "precache-manifest.8d5ff225c06d787837d2b54b1f78e6f9.js": "/spotify-advanced-search-and-playlist-creator/precache-manifest.8d5ff225c06d787837d2b54b1f78e6f9.js",
     "service-worker.js": "/spotify-advanced-search-and-playlist-creator/service-worker.js",
     "static/js/2.6936559b.chunk.js.LICENSE.txt": "/spotify-advanced-search-and-playlist-creator/static/js/2.6936559b.chunk.js.LICENSE.txt",
     "static/media/spotify-logo.png": "/spotify-advanced-search-and-playlist-creator/static/media/spotify-logo.31bad8d4.png"
@@ -15,6 +15,6 @@
   "entrypoints": [
     "static/js/runtime-main.a66d1936.js",
     "static/js/2.6936559b.chunk.js",
-    "static/js/main.569b3252.chunk.js"
+    "static/js/main.1bec06b1.chunk.js"
   ]
 }
