@@ -133,7 +133,8 @@ export const Row = ({
       </TableCell>
       <TableCell isOdd={isOdd(index)}>{getFormattedDurationString(duration)}</TableCell>
       <TableCell isOdd={isOdd(index)} size={14}>
-        {Math.round(tempo)}BPM
+        {Math.round(tempo)}
+        <small>BPM</small>
       </TableCell>
       <TableCell isOdd={isOdd(index)}>
         <StatBar percentage={popularity} fadeRate={0.9} />

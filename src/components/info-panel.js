@@ -72,7 +72,10 @@ export const InfoPanel = ({ isOpen, close = () => {} }) => {
         <PanelHeader>Info</PanelHeader>
         <AuthButton />
         <Label>How to use:</Label>
-        <Description>TODO add this</Description>
+        <Description>
+          Find the perfect song for you playlist by searching by any number of params. The only required param is
+          'genre' and you can pick up to three of those.
+        </Description>
         <Divider />
         {Object.values(audioFeaturesDescriptions).map(({ label, description }, i) => (
           <Fragment key={i}>

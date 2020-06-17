@@ -1,9 +1,20 @@
 export const SCOPE =
   'user-read-recently-played playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private' // https://developer.spotify.com/documentation/general/guides/scopes
 export const audioFeaturesDescriptions = {
-  acousticness: {
-    label: 'Acousticness',
-    description: 'A confidence measure whether the track is acoustic.',
+  tempo: {
+    label: 'Tempo',
+    description:
+      'The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.',
+  },
+  popularity: {
+    label: 'Popularity',
+    description:
+      'The popularity of the track. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are. Generally speaking, songs that are being played a lot now will have a higher popularity than songs that were played a lot in the past. Duplicate tracks (e.g. the same track from a single and an album) are rated independently. Artist and album popularity is derived mathematically from track popularity. Note that the popularity value may lag actual popularity by a few days: the value is not updated in real time.',
+  },
+  valence: {
+    label: 'Valence',
+    description:
+      'A measure describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).',
   },
   danceability: {
     label: 'Danceability',
@@ -15,19 +26,28 @@ export const audioFeaturesDescriptions = {
     description:
       'Energy is a measure that represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.',
   },
+  acousticness: {
+    label: 'Acousticness',
+    description: 'A confidence measure whether the track is acoustic.',
+  },
   instrumental: {
     label: 'Instrumental',
     description:
       'Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”.',
   },
-  key: {
-    label: 'Key',
-    description: 'The key the track is in.',
-  },
   liveness: {
     label: 'Liveness',
     description:
       'Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live.',
+  },
+  speechiness: {
+    label: 'Speechiness',
+    description:
+      'Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry).',
+  },
+  key: {
+    label: 'Key',
+    description: 'The key the track is in.',
   },
   loudness: {
     label: 'Loudness',
@@ -39,30 +59,10 @@ export const audioFeaturesDescriptions = {
     description:
       'Mode indicates the modality (major or minor) of a track, the type of scale from which its melodic content is derived.',
   },
-  popularity: {
-    label: 'Popularity',
-    description:
-      'The popularity of the track. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are. Generally speaking, songs that are being played a lot now will have a higher popularity than songs that were played a lot in the past. Duplicate tracks (e.g. the same track from a single and an album) are rated independently. Artist and album popularity is derived mathematically from track popularity. Note that the popularity value may lag actual popularity by a few days: the value is not updated in real time.',
-  },
-  speechiness: {
-    label: 'Speechiness',
-    description:
-      'Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry).',
-  },
-  tempo: {
-    label: 'Tempo',
-    description:
-      'The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.',
-  },
   time_signature: {
     label: 'Meter',
     description:
       'An estimated overall time signature of a track. The time signature (meter) is a notational convention to specify how many beats are in each bar (or measure).',
-  },
-  valence: {
-    label: 'Valence',
-    description:
-      'A measure describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).',
   },
 }
 
