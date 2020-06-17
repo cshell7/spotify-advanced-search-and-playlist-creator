@@ -74,7 +74,9 @@ export const InfoPanel = ({ isOpen, close = () => {} }) => {
         <Label>How to use:</Label>
         <Description>
           Find the perfect song for you playlist by searching by any number of params. The only required param is
-          'genre' and you can pick up to three of those.
+          'genre' and you can pick up to three of those. You can click on the column headers to sort the results. Select
+          a playlist(if you don't have any listed go created on in your spotify app) and then press the '+' button on
+          the right of the table to add that song to your playlist.
         </Description>
         <Divider />
         {Object.values(audioFeaturesDescriptions).map(({ label, description }, i) => (
