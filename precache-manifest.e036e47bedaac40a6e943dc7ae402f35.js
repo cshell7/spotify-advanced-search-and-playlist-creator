@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "168a020c28a9c15df513ed6c10e3aa8e",
+    "revision": "e16aa781e0376365a116347f8662e0a4",
     "url": "/spotify-advanced-search-and-playlist-creator/index.html"
   },
   {
-    "revision": "0e2344352c1ec67ac07e",
-    "url": "/spotify-advanced-search-and-playlist-creator/static/js/2.bb51210f.chunk.js"
+    "revision": "6a205864e7de25b1a487",
+    "url": "/spotify-advanced-search-and-playlist-creator/static/js/2.d5fa8df5.chunk.js"
   },
   {
     "revision": "6b3248a1692933689dcb27b9e1ed5092",
-    "url": "/spotify-advanced-search-and-playlist-creator/static/js/2.bb51210f.chunk.js.LICENSE.txt"
+    "url": "/spotify-advanced-search-and-playlist-creator/static/js/2.d5fa8df5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d38e63a3cf85bc5784d6",
-    "url": "/spotify-advanced-search-and-playlist-creator/static/js/main.f20170d6.chunk.js"
+    "revision": "fc33779edf0ad7c364b1",
+    "url": "/spotify-advanced-search-and-playlist-creator/static/js/main.bfeb26ae.chunk.js"
   },
   {
     "revision": "89dc78fd0794c193c517",
