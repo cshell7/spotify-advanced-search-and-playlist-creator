@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/spotify-advanced-search-and-playlist-creator/precache-manifest.b64749fe74aa25556efd49e43be48988.js"
+  "/spotify-advanced-search-and-playlist-creator/precache-manifest.95c09139e145ee463139adcdd211e4de.js"
 );
 
 self.addEventListener('message', (event) => {
