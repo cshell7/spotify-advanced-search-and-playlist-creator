@@ -1,5 +1,4 @@
-export const SCOPE =
-  'user-read-recently-played playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private' // https://developer.spotify.com/documentation/general/guides/scopes
+export const SCOPE = 'playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private' // https://developer.spotify.com/documentation/general/guides/scopes
 export const audioFeaturesDescriptions = {
   tempo: {
     label: 'Tempo',
