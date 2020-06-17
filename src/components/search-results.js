@@ -15,7 +15,7 @@ const TableBody = styled.div`
   width: ${TABLE_WIDTH}px;
   overflow-x: hidden;
   overflow-y: scroll;
-  height: calc(100vh - 64px - 64px - 40px);
+  height: calc(100vh - 64px - 64px - 64px);
   font-size: 16px;
 
   & > div {
@@ -46,6 +46,7 @@ const Table = styled.div`
 const HeaderItem = styled.div`
   position: relative;
   border-bottom: 1px solid ${colors.gray};
+  cursor: pointer;
 
   p {
     font-size: 12px;
@@ -146,7 +147,7 @@ export const SearchResults = ({
               isPlaying={isPlaying && song.id === activeSong?.id}
               handleSaveSongToPlaylist={handleSaveSongToPlaylist}
               activePlaylistId={activePlaylistId}
-              isSavingToPlaylist={isSavingToPlaylist == song.id}
+              isSavingToPlaylist={isSavingToPlaylist === song.id}
               isSaved={!!activePlaylist && activePlaylist.items.some(({ track }) => track.id === song.id)}
             />
           ))}

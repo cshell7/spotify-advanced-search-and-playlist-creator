@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 
 import { AuthButton } from './auth-button'
 import { colors, audioFeaturesDescriptions } from '../consts'
-
+import infoIcon from '../img/info-icon.png'
+import { CloseButton } from './close-button'
 const Panel = styled.div`
   position: absolute;
   top: 0;
@@ -23,15 +24,6 @@ const Panel = styled.div`
   ${AuthButton} {
     margin: 8px auto;
   }
-`
-
-const CloseButton = styled.div`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-weight: 900;
-  font-size: 20px;
-  cursor: pointer;
 `
 
 const PanelHeader = styled.h4`
@@ -76,17 +68,17 @@ export const InfoPanel = ({ isOpen, close = () => {} }) => {
   return (
     <>
       <Panel isOpen={isOpen}>
-        <CloseButton onClick={close}>X</CloseButton>
+        <CloseButton onClick={close} />
         <PanelHeader>Info</PanelHeader>
         <AuthButton />
         <Label>How to use:</Label>
         <Description>TODO add this</Description>
         <Divider />
-        {Object.values(audioFeaturesDescriptions).map(({ label, description }) => (
-          <>
+        {Object.values(audioFeaturesDescriptions).map(({ label, description }, i) => (
+          <Fragment key={i}>
             <Label>{label}</Label>
             <Description>{description}</Description>
-          </>
+          </Fragment>
         ))}
       </Panel>
       <Background isOpen={isOpen} onClick={close} />
@@ -95,7 +87,7 @@ export const InfoPanel = ({ isOpen, close = () => {} }) => {
 }
 
 const InfoIcon = styled.img.attrs(() => ({
-  src: '/info-icon.png',
+  src: infoIcon,
 }))`
   height: 32px;
   width: 32px;

@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from '../consts'
+import spotifyLogo from '../img/spotify-logo.png'
 
 const StyledPageHeader = styled.header`
   display: flex;
-  flex-wrap: wrap;
   width: 100vw;
   height: 64px;
   padding: 0 40px 0 16px;
@@ -13,12 +13,12 @@ const StyledPageHeader = styled.header`
 `
 
 const SpotifyLogo = styled.img.attrs(() => ({
-  src: '/spotify-logo.png',
+  src: spotifyLogo,
 }))`
   height: 32px;
   align-self: center;
   @media (max-width: 600px) {
-    height: 24px;
+    height: 20px;
   }
 `
 
@@ -38,13 +38,15 @@ const DynamicFontSize = styled.p`
 
 const Title = styled(DynamicFontSize).attrs(() => ({
   as: 'h1',
-  min: 16,
+  min: 14,
   max: 32,
   screenMin: 500,
   screenMax: 900,
 }))`
   font-weight: 400;
   margin: auto;
+  padding: 0 8px;
+  text-align: center;
 `
 
 export const PageHeader = () => {

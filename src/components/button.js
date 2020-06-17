@@ -13,7 +13,7 @@ export const Button = styled.button`
   font-size: 14px;
   line-height: 1;
   text-align: center;
-  white-space: 'nowrap';
+  white-space: nowrap;
   cursor: pointer;
   outline: none;
   font-weight: 600;

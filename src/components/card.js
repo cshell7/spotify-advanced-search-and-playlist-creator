@@ -12,6 +12,7 @@ export const Card = styled.div`
 
 const CardHeader = styled.h3`
   margin: 0;
+  padding-bottom: 4px;
   text-align: center;
   font-weight: 100;
   border-bottom: 4px solid ${colors.gray};
@@ -23,5 +24,13 @@ const CardCopy = styled.p`
   font-weight: 100;
 `
 
+const CardContainer = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 16px;
+  overflow: auto;
+`
+
 Card.Header = CardHeader
 Card.Copy = CardCopy
+Card.Container = CardContainer

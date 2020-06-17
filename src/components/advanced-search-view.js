@@ -1,15 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useSpotityAPI } from '@c-shell/spotify-api-hook'
 import styled from 'styled-components'
 import cookies from 'js-cookie'
-import { objectToQueryParamString } from '@c-shell/utils-url-query-params'
-
 import { InfoPanel, InfoPanelButton } from './info-panel'
 import { SearchResults } from './search-results'
 import { Card } from './card'
 import { Button } from './button'
 import { Select } from './select'
-import { colors, pitches } from '../consts'
+import { colors } from '../consts'
+import { SearchByNameForm } from './search-by-name-form'
+import { SearchByParamsForm } from './search-by-params-form'
+import { CloseButton } from './close-button'
+import { Loader } from './loader'
 
 const Container = styled.div`
   position: relative;
@@ -46,43 +48,9 @@ const Tab = styled.div`
   cursor: pointer;
 `
 
-const InputContainer = styled.div`
-  display: flex;
-`
-
-const Label = styled.label``
-
-const Input = styled.input`
-  padding: 8px;
-  border: 1px solid ${colors.gray};
-
-  &:active,
-  &:focus {
-    border: 1px solid ${colors.spotifyGreen};
-    outline: none;
-  }
-`
-
 const StyledSelect = styled(Select)`
   &&& {
     margin-left: 16px;
-  }
-`
-
-const SearchContainer = styled.div`
-  overflow-x: hidden;
-  overflow-y: scroll;
-  height: calc(100vh - 64px - 64px - 40px);
-`
-
-const SearchByName = styled.div`
-  display: grid;
-  grid-gap: 24px;
-  padding: 24px;
-  justify-content: center;
-
-  ${Input}, ${Button} {
-    width: 220px;
   }
 `
 
@@ -109,23 +77,15 @@ const ResultsHeader = styled.div`
 
 const NoResultsMessage = styled.p``
 
-const CloseButton = styled.div`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-weight: 900;
-  font-size: 20px;
-  cursor: pointer;
-`
+const PlaylistLabel = styled.label``
 
 export const AdvancedSearchView = () => {
   const { fetchData } = useSpotityAPI()
   const audioObj = useRef(new Audio())
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [areSongsLoading, setAreSongsLoading] = useState(false)
 
-  const [searchInputValue, setSearchInputValue] = useState('')
-  const [searchResults, setSearchResults] = useState(JSON.parse(localStorage.getItem('results') || '{}'))
+  const [searchResults, setSearchResults] = useState()
 
   const [user, setUser] = useState()
   const [userError, setUserError] = useState()
@@ -135,7 +95,7 @@ export const AdvancedSearchView = () => {
         .then((user) => setUser(user))
         .catch((error) => setUserError(error))
     }
-  }, [user, userError])
+  }, [user, userError, fetchData])
 
   const [playlists, setPlaylists] = useState()
   const [playlistsError, setPlaylistsError] = useState()
@@ -145,17 +105,20 @@ export const AdvancedSearchView = () => {
         .then((playlists) => setPlaylists(playlists))
         .catch((error) => setPlaylistsError(error))
     }
-  }, [playlists, playlistsError])
+  }, [playlists, playlistsError, fetchData])
 
-  const [genres, setGenres] = useState()
+  const [genres, setGenres] = useState(JSON.parse(cookies.get('genres') || '[]'))
   const [genresError, setGenresError] = useState()
   useEffect(() => {
-    if (!genres && !genresError) {
+    if (!genres?.length && !genresError) {
       fetchData('recommendations/available-genre-seeds')
-        .then(({ genres }) => setGenres(genres))
+        .then(({ genres }) => {
+          cookies.set('genres', JSON.stringify(genres), { expires: 7 })
+          setGenres(genres)
+        })
         .catch((error) => setGenresError(error))
     }
-  }, [genres, genresError])
+  }, [genres, genresError, fetchData])
 
   const [ownedPlaylists, setOwnedPlaylists] = useState([])
   useEffect(() => {
@@ -163,102 +126,13 @@ export const AdvancedSearchView = () => {
       const filteredPlaylists = playlists.items.filter(({ owner }) => owner.id === user.id)
       setOwnedPlaylists(filteredPlaylists)
     }
-  }, [user, playlists])
-
-  const handleSearchByName = () => {
-    setIsLoading(true)
-    fetchData(`search?q=${encodeURIComponent(searchInputValue)}&type=track&limit=20`)
-      .then(({ tracks }) => {
-        const songIds = tracks.items.map(({ id }) => id)
-        fetchData(`audio-features?ids=${songIds}`).then(({ audio_features: audioFeatures }) => {
-          const results = {
-            ...tracks,
-            items: [
-              ...tracks.items.map((item, i) => ({
-                ...item,
-                audioFeatures: audioFeatures[i],
-              })),
-            ],
-          }
-          setSearchResults(results)
-          localStorage.setItem('results', JSON.stringify(results))
-        })
-      })
-      .finally(() => setIsLoading(false))
-  }
-
-  const [genreSeeds, setGenreSeeds] = useState([])
-  const handleSelectGenre = (newGenra) => {
-    if (genreSeeds.find((seed) => seed === newGenra)) setGenreSeeds(genreSeeds.filter((seed) => seed !== newGenra))
-    else if (genreSeeds.length < 3) setGenreSeeds([...genreSeeds, newGenra])
-  }
-
-  const inputsWithZeroOneRange = [
-    'acousticness',
-    'danceability',
-    'energy',
-    'instrumentalness',
-    'liveness',
-    'speechiness',
-    'valence',
-  ]
-  const [advancedSearchInput, setAvancedSearchInput] = useState({})
-  console.log({ advancedSearchInput, genreSeeds })
-  const handleSearchByParams = () => {
-    const {
-      acousticness,
-      danceability,
-      energy,
-      instrumentalness,
-      key,
-      mode,
-      liveness,
-      popularity,
-      speechiness,
-      tempo,
-      timeSignature,
-      valence,
-    } = advancedSearchInput
-    setIsLoading(true)
-    const params = {
-      ...(!!genreSeeds?.length && { seed_genres: genreSeeds.join(',') }),
-      ...(!!acousticness && { target_acousticness: acousticness }),
-      ...(!!danceability && { target_danceability: danceability }),
-      ...(!!energy && { target_energy: energy }),
-      ...(!!instrumentalness && { target_instrumentalness: instrumentalness }),
-      ...(!!liveness && { target_liveness: liveness }),
-      ...(!!speechiness && { target_speechiness: speechiness }),
-      ...(!!valence && { target_valence: valence }),
-      ...(!!popularity && { target_popularity: popularity }),
-      ...(!!timeSignature && { target_time_signature: timeSignature }),
-      ...(!!tempo && { target_tempo: tempo }),
-      ...(!!mode && { target_mode: mode }),
-      ...(!!key && { target_key: key }),
-      limit: 20,
-      market: 'US',
-    }
-    fetchData(`recommendations${objectToQueryParamString(params)}`)
-      .then((data) => {
-        const tracks = data?.tracks?.items || data?.tracks || []
-        const songIds = tracks.map(({ id }) => id)
-        fetchData(`audio-features?ids=${songIds}`).then(({ audio_features: audioFeatures }) => {
-          const results = {
-            ...data,
-            items: [
-              ...tracks.map((item, i) => ({
-                ...item,
-                audioFeatures: audioFeatures[i],
-              })),
-            ],
-          }
-          setSearchResults(results)
-          localStorage.setItem('results', JSON.stringify(results))
-        })
-      })
-      .finally(() => setIsLoading(false))
-  }
+  }, [user, playlists, fetchData])
 
   const [currentFilter, setCurrentFilter] = useState()
+
+  useEffect(() => {
+    setCurrentFilter(null)
+  }, [areSongsLoading])
 
   const handleSortSongs = (filter) => {
     let filteredSongs = searchResults?.items || []
@@ -305,15 +179,15 @@ export const AdvancedSearchView = () => {
   const [activePlaylist, setActivePlaylist] = useState()
   const [isSavingToPlaylist, setIsSavingToPlaylist] = useState(false)
 
-  const handleFetchActivePlaylist = () => {
+  const handleFetchActivePlaylist = useCallback(() => {
     fetchData(`playlists/${activePlaylistId}/tracks`).then((data) => {
       setActivePlaylist(data)
     })
-  }
+  }, [activePlaylistId, fetchData, setActivePlaylist])
 
   useEffect(() => {
     if (activePlaylistId) handleFetchActivePlaylist()
-  }, [activePlaylistId])
+  }, [activePlaylistId, handleFetchActivePlaylist])
 
   const handleSaveSongToPlaylist = (uri, id) => {
     setIsSavingToPlaylist(id)
@@ -334,7 +208,7 @@ export const AdvancedSearchView = () => {
       <StyledInfoPannelButton onClick={() => setIsInfoPanelOpen(!isInfoPanelOpen)} />
       {view === 'search' && (
         <StyledCard>
-          <CloseButton onClick={() => setView('results')}>X</CloseButton>
+          <CloseButton onClick={() => setView('results')} isWhite />
           <Card.Header>Search</Card.Header>
           <Tabs>
             <Tab isActive={searchView === 'byParams'} onClick={() => setSearchView('byParams')}>
@@ -345,168 +219,26 @@ export const AdvancedSearchView = () => {
             </Tab>
           </Tabs>
           {searchView === 'byParams' && (
-            <>
-              {genres?.length &&
-                genres.map((genre) => {
-                  return (
-                    <button onClick={() => handleSelectGenre(genre)}>
-                      {genreSeeds.find((seed) => seed === genre) && '++'}
-                      {genre}
-                    </button>
-                  )
-                })}
-              {inputsWithZeroOneRange.map((item) => (
-                <InputContainer>
-                  <Label>{item}</Label>
-                  <StyledSelect
-                    id={item}
-                    name={item}
-                    onChange={({ target }) =>
-                      setAvancedSearchInput({
-                        ...advancedSearchInput,
-                        [item]: target.value,
-                      })
-                    }
-                    value={advancedSearchInput[item]}
-                  >
-                    <option value={null}></option>
-                    <option value="1.0">1.0 High</option>
-                    <option value="0.9">0.9</option>
-                    <option value="0.8">0.8</option>
-                    <option value="0.7">0.7</option>
-                    <option value="0.6">0.6</option>
-                    <option value="0.5">0.5</option>
-                    <option value="0.4">0.4</option>
-                    <option value="0.3">0.3</option>
-                    <option value="0.2">0.2</option>
-                    <option value="0.1">0.1</option>
-                    <option value="0.0">0.0 Low</option>
-                  </StyledSelect>
-                </InputContainer>
-              ))}
-              <InputContainer>
-                <Label>Popularity (0-8)</Label>
-                <Input
-                  id="popularity"
-                  name="popularity"
-                  onChange={({ target }) =>
-                    setAvancedSearchInput({
-                      ...advancedSearchInput,
-                      popularity: target.value,
-                    })
-                  }
-                  value={advancedSearchInput.popularity || ''}
-                  type="number"
-                  min="1"
-                  max="8"
-                />
-              </InputContainer>
-              <InputContainer>
-                <Label>Time Signature (0-100)</Label>
-                <Input
-                  id="timeSignature"
-                  name="timeSignature"
-                  onChange={({ target }) =>
-                    setAvancedSearchInput({
-                      ...advancedSearchInput,
-                      timeSignature: target.value,
-                    })
-                  }
-                  value={advancedSearchInput.timeSignature || ''}
-                  type="number"
-                  min="0"
-                  max="100"
-                />
-              </InputContainer>
-              <InputContainer>
-                <Label>Tempo</Label>
-                <Input
-                  id="tempo"
-                  name="tempo"
-                  onChange={({ target }) =>
-                    setAvancedSearchInput({
-                      ...advancedSearchInput,
-                      tempo: target.value,
-                    })
-                  }
-                  value={advancedSearchInput.tempo || ''}
-                  type="number"
-                  min="1"
-                />
-              </InputContainer>
-              <InputContainer>
-                <Label>Mode</Label>
-                <StyledSelect
-                  id="mode"
-                  name="mode"
-                  onChange={({ target }) =>
-                    setAvancedSearchInput({
-                      ...advancedSearchInput,
-                      mode: target.value,
-                    })
-                  }
-                  value={advancedSearchInput.mode}
-                >
-                  <option value={null}></option>
-                  <option value="1">Major</option>
-                  <option value="0">Minor</option>
-                </StyledSelect>
-              </InputContainer>
-              <InputContainer>
-                <Label>Key</Label>
-                <StyledSelect
-                  id="key"
-                  name="key"
-                  onChange={({ target }) =>
-                    setAvancedSearchInput({
-                      ...advancedSearchInput,
-                      key: target.value,
-                    })
-                  }
-                  value={advancedSearchInput.mode}
-                >
-                  <option value={null}></option>
-                  {Object.entries(pitches).map(([value, label]) => (
-                    <option value={value}>{label}</option>
-                  ))}
-                </StyledSelect>
-              </InputContainer>
-              <Button
-                onClick={() => {
-                  handleSearchByParams()
-                  setView('results')
-                }}
-                disabled={!genreSeeds.length}
-              >
-                Search
-              </Button>
-            </>
+            <SearchByParamsForm
+              setAreSongsLoading={setAreSongsLoading}
+              setView={setView}
+              setSearchResults={setSearchResults}
+              genres={genres}
+            />
           )}
           {searchView === 'byName' && (
-            <SearchByName>
-              <Input
-                placeholder="Song name.."
-                value={searchInputValue}
-                onChange={({ target }) => setSearchInputValue(target.value)}
-                name="byName"
-              />
-              <Button
-                onClick={() => {
-                  handleSearchByName()
-                  setView('results')
-                }}
-                disabled={!searchInputValue}
-              >
-                Search
-              </Button>
-            </SearchByName>
+            <SearchByNameForm
+              setAreSongsLoading={setAreSongsLoading}
+              setView={setView}
+              setSearchResults={setSearchResults}
+            />
           )}
         </StyledCard>
       )}
       {view === 'results' && (
         <ResultsContainer>
           <ResultsHeader>
-            <Label for="playlists">Playlist: </Label>
+            <PlaylistLabel for="playlists">Playlist: </PlaylistLabel>
             <StyledSelect
               id="playlists"
               name="playlists"
@@ -525,8 +257,8 @@ export const AdvancedSearchView = () => {
             </StyledSelect>
             <Button onClick={() => setView('search')}>Search Again</Button>
           </ResultsHeader>
-          {isLoading ? (
-            <div>Loading</div>
+          {areSongsLoading ? (
+            <Loader />
           ) : !!searchResults ? (
             <>
               <SearchResults

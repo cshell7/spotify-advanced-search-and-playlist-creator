@@ -14,12 +14,12 @@ export const ErrorView = () => {
   const { error } = useSpotityAPI()
 
   return (
-    <Card>
-      <Card.Header>Something Bad Happened!</Card.Header>
-      <Card.Copy>{error.message}</Card.Copy>
-      <Card.Copy>
-        <Link href={error.link}>{error.code}</Link>
-      </Card.Copy>
-    </Card>
+    <Card.Container>
+      <Card>
+        <Card.Header>We're doomed!!! Well probably not but something did go wrong with this app</Card.Header>
+        <Card.Copy>{error?.message || 'Try refreshing the page'}</Card.Copy>
+        <Card.Copy>{error?.link ? <Link href={error.link}>{error.code}</Link> : error?.code}</Card.Copy>
+      </Card>
+    </Card.Container>
   )
 }

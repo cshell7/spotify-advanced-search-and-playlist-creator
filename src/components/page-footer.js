@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { colors, createdByLink, gitHubLink } from '../consts'
+import gitHubIcon from '../img/github-icon.png'
 
 const StyledPageFooter = styled.footer`
   display: flex;
@@ -33,7 +34,7 @@ const GitHubLink = styled.a.attrs(() => ({
 `
 
 const GitHubLogo = styled.img.attrs(() => ({
-  src: '/github-icon.png',
+  src: gitHubIcon,
 }))`
   height: 100%;
 `

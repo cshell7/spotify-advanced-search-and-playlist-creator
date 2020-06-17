@@ -2,7 +2,7 @@ import React from 'react'
 import { useSpotityAPI } from '@c-shell/spotify-api-hook'
 import styled from 'styled-components'
 
-import { SCOPE, colors } from '../consts'
+import { SCOPE } from '../consts'
 
 import { Button } from './button'
 

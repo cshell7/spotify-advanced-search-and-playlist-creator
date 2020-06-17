@@ -1,8 +1,12 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { StatBar } from './stat-bar'
-import formatDuration from 'date-fns/formatDuration'
 import { pitches, colors } from '../consts'
+import addIcon from '../img/add-icon.png'
+import checkIcon from '../img/check-icon.png'
+import explicitIcon from '../img/explicit-icon.png'
+import playIcon from '../img//play-icon.png'
+import pauseIcon from '../img/pause-icon.png'
 
 const PlayPauseButton = styled.img.attrs(() => ({
   alt: 'Play/Pause preview',
@@ -12,19 +16,9 @@ const PlayPauseButton = styled.img.attrs(() => ({
   cursor: pointer;
 `
 
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-`
-
 const AddButton = styled.img.attrs(() => ({
   alt: 'Add to playlist',
-  src: '/add-icon.png',
+  src: addIcon,
 }))`
   height: 24px;
   width: 24px;
@@ -41,7 +35,7 @@ const AddButton = styled.img.attrs(() => ({
 
 const AddedIcon = styled.img.attrs(() => ({
   alt: 'Added to playlist',
-  src: '/check-icon.png',
+  src: checkIcon,
 }))`
   height: 24px;
   width: 24px;
@@ -49,7 +43,7 @@ const AddedIcon = styled.img.attrs(() => ({
 
 export const ExplicitIcon = styled.img.attrs(() => ({
   alt: 'Explicit',
-  src: '/explicit-icon.png',
+  src: explicitIcon,
   label: 'Explicit',
 }))`
   height: 16px;
@@ -128,7 +122,7 @@ export const Row = ({
   return (
     <>
       <TableCell isOdd={isOdd(index)} onClick={() => handlePlayPauseSong(song)}>
-        {preview_url ? <PlayPauseButton src={isPlaying ? '/pause-icon.png' : '/play-icon.png'} /> : ''}
+        {preview_url ? <PlayPauseButton src={isPlaying ? pauseIcon : playIcon} /> : ''}
       </TableCell>
       <TableCell isOdd={isOdd(index)}>
         <Link href={uri}>{name}</Link>
