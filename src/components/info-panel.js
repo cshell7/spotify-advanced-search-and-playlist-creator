@@ -35,7 +35,7 @@ const PanelHeader = styled.h4`
 
 const Label = styled.h2`
   font-size: 14px;
-  margin: 0;
+  margin: 0 16px 0;
   font-weight: 600;
 `
 
