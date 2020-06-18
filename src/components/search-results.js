@@ -30,7 +30,7 @@ const Table = styled.div`
   overflow-y: hidden;
   height: calc(100vh - 64px - 64px);
   width: ${TABLE_WIDTH + 2}px;
-  max-width: 100vw;
+  max-width: calc(100vw - 2px);
   margin: 0 auto;
   border-right: 1px solid ${colors.gray};
   border-left: 1px solid ${colors.gray};
