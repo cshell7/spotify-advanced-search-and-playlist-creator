@@ -11,6 +11,8 @@ const clientId = process.env.REACT_APP_CLIENT_ID
 export const Page = () => {
   const { isAuthed, error } = useSpotityAPI()
 
+  console.log({ error })
+
   if (!clientId) return <NoClientIdView />
   else if (error) return <ErrorView />
   else if (!isAuthed) return <AuthorizationView />

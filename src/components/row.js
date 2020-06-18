@@ -7,8 +7,30 @@ import checkIcon from '../img/check-icon.png'
 import explicitIcon from '../img/explicit-icon.png'
 import playIcon from '../img//play-icon.png'
 import pauseIcon from '../img/pause-icon.png'
+import { Button } from './button'
 
-const PlayPauseButton = styled.img.attrs(() => ({
+export const SimilarsButton = styled(Button)`
+  color: ${colors.white};
+  background-color: ${colors.spotifyBlack};
+  border: 1px solid ${colors.spotifyGreen};
+  font-size: 12px;
+  font-weight: 100;
+  padding: 4px;
+  height: 22px;
+  width: 22px;
+
+  &:active {
+    border: 1px solid ${colors.spotifyGreen};
+  }
+
+  &:focus {
+    border: 1px solid ${colors.spotifyGreen};
+    outline: 1px solid ${colors.white};
+    outline-offset: 1px;
+  }
+`
+
+export const PlayPauseButton = styled.img.attrs(() => ({
   alt: 'Play/Pause preview',
 }))`
   height: 24px;
@@ -16,7 +38,7 @@ const PlayPauseButton = styled.img.attrs(() => ({
   cursor: pointer;
 `
 
-const AddButton = styled.img.attrs(() => ({
+export const AddButton = styled.img.attrs(() => ({
   alt: 'Add to playlist',
   src: addIcon,
 }))`
@@ -54,12 +76,14 @@ const TableCell = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
+  justify-content: ${({ centered }) => (centered ? 'center' : 'flex-start')};
   ${({ isOdd }) => isOdd && 'background-color: #ffffff0f;'}
   font-size: ${({ size }) => (size ? `${size}px` : 'inherit')};
   a, p {
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    margin: 0;
   }
 `
 
@@ -77,6 +101,7 @@ export const Row = ({
   index,
   isSavingToPlaylist,
   isSaved,
+  handleSearchSimilarSong,
 }) => {
   const { name, id, artists, explicit, duration_ms, popularity, audioFeatures, preview_url, uri } = song
   const {
@@ -121,15 +146,29 @@ export const Row = ({
 
   return (
     <>
-      <TableCell isOdd={isOdd(index)} onClick={() => handlePlayPauseSong(song)}>
+      <TableCell isOdd={isOdd(index)} onClick={() => handlePlayPauseSong(song)} centered>
         {preview_url ? <PlayPauseButton src={isPlaying ? pauseIcon : playIcon} /> : ''}
+      </TableCell>
+      <TableCell isOdd={isOdd(index)} centered>
+        {isSaved ? (
+          <AddedIcon />
+        ) : (
+          <AddButton
+            isLoading={isSavingToPlaylist}
+            disabled={!activePlaylistId}
+            onClick={() => !!activePlaylistId && handleSaveSongToPlaylist(uri, id)}
+          />
+        )}
+      </TableCell>
+      <TableCell isOdd={isOdd(index)} centered>
+        <SimilarsButton onClick={() => handleSearchSimilarSong(id)}>S</SimilarsButton>
       </TableCell>
       <TableCell isOdd={isOdd(index)}>
         <Link href={uri}>{name}</Link>
       </TableCell>
       <TableCell isOdd={isOdd(index)}>{explicit && <ExplicitIcon />}</TableCell>
       <TableCell isOdd={isOdd(index)} size={14}>
-        {artists.map(({ name }) => name).join(', ')}
+        <p>{artists.map(({ name }) => name).join(', ')}</p>
       </TableCell>
       <TableCell isOdd={isOdd(index)}>{getFormattedDurationString(duration)}</TableCell>
       <TableCell isOdd={isOdd(index)} size={14}>
@@ -169,18 +208,6 @@ export const Row = ({
       </TableCell>
       <TableCell isOdd={isOdd(index)} size={14}>
         {time_signature}
-      </TableCell>
-
-      <TableCell isOdd={isOdd(index)}>
-        {isSaved ? (
-          <AddedIcon />
-        ) : (
-          <AddButton
-            isLoading={isSavingToPlaylist}
-            disabled={!activePlaylistId}
-            onClick={() => !!activePlaylistId && handleSaveSongToPlaylist(uri, id)}
-          />
-        )}
       </TableCell>
     </>
   )

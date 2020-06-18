@@ -16,8 +16,8 @@ export const AuthorizationView = () => {
       <StyledCard>
         <Card.Header>Please link your Spotify account to continue</Card.Header>
         <Card.Copy>
-          This authorization is temporary and allows spotify to search for songs for your and save them to a playlist.
-          You will be taken to Spotify's site to login then redirected back here. I don't store any of your data.
+          This authorization is temporary and allows spotify to search for songs and save them to your playlists. You
+          will be taken to Spotify's site to login then redirected back here. I don't store any of your data.
         </Card.Copy>
         <AuthButton />
       </StyledCard>

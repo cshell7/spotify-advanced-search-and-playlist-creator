@@ -22,10 +22,10 @@ export const SearchByNameForm = ({ setAreSongsLoading, setView, setSearchResults
 
   const handleSearchByName = () => {
     setAreSongsLoading(true)
-    fetchData(`search?q=${encodeURIComponent(searchInputValue)}&type=track&limit=20`)
+    fetchData(`search?q=${encodeURIComponent(searchInputValue)}&type=track&limit=25`)
       .then(({ tracks }) => {
         const songIds = tracks.items.map(({ id }) => id)
-        fetchData(`audio-features?ids=${songIds}`).then(({ audio_features: audioFeatures }) => {
+        return fetchData(`audio-features?ids=${songIds}`).then(({ audio_features: audioFeatures }) => {
           const results = {
             ...tracks,
             items: [

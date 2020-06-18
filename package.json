@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "An advanced search and playlist creation tool for Spotify.",
   "private": true,
-  "homepage": "https://cshell7.github.io/spotify-advanced-search-and-playlist-creator",
+  "homepage": "http://advancedsearchforspotify.info/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "@c-shell/spotify-api-hook": "^1.1.0",
+    "@c-shell/spotify-api-hook": "^1.2.2",
     "@c-shell/utils-url-query-params": "^1.0.0",
     "date-fns": "^2.14.0",
     "gh-pages": "^3.0.0",

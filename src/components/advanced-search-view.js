@@ -49,6 +49,16 @@ const Tab = styled.div`
 `
 
 const StyledSelect = styled(Select)`
+  ${({ value }) =>
+    !!value &&
+    `
+  border: 1px solid ${colors.spotifyGreen};
+  background-color: ${colors.spotifyBlack};
+
+  &:focus {
+    border: 1px solid ${colors.spotifyGreen};
+  }
+`}
   &&& {
     margin-left: 16px;
   }
@@ -71,11 +81,13 @@ const ResultsHeader = styled.div`
     padding: 4px 8px;
     font-size: 12px;
     margin-left: auto;
-    height: 22px;
+    height: 24px;
   }
 `
 
-const NoResultsMessage = styled.p``
+const NoResultsMessage = styled.p`
+  text-align: center;
+`
 
 const PlaylistLabel = styled.label``
 
@@ -107,7 +119,8 @@ export const AdvancedSearchView = () => {
     }
   }, [playlists, playlistsError, fetchData])
 
-  const [genres, setGenres] = useState(JSON.parse(cookies.get('genres') || '[]'))
+  const cachedGenres = cookies.get('genres')
+  const [genres, setGenres] = useState(cachedGenres && cachedGenres !== 'undefined' && JSON.parse(cachedGenres))
   const [genresError, setGenresError] = useState()
   useEffect(() => {
     if (!genres?.length && !genresError) {
@@ -122,8 +135,8 @@ export const AdvancedSearchView = () => {
 
   const [ownedPlaylists, setOwnedPlaylists] = useState([])
   useEffect(() => {
-    if (user && playlists) {
-      const filteredPlaylists = playlists.items.filter(({ owner }) => owner.id === user.id)
+    if (user && playlists?.items) {
+      const filteredPlaylists = playlists?.items.filter(({ owner }) => owner.id === user.id)
       setOwnedPlaylists(filteredPlaylists)
     }
   }, [user, playlists, fetchData])
@@ -199,7 +212,33 @@ export const AdvancedSearchView = () => {
       .finally(() => setIsSavingToPlaylist(false))
   }
 
-  const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false)
+  const handleSearchSimilarSong = (songId) => {
+    setAreSongsLoading(true)
+    fetchData(`recommendations?seed_tracks=${songId}`)
+      .then((data) => {
+        const tracks = data?.tracks?.items || data?.tracks || [] // The payload structure is differnt for the tracks api vs the recommendations api
+        const songIds = tracks.map(({ id }) => id)
+        return fetchData(`audio-features?ids=${songIds}`).then(({ audio_features }) => {
+          const results = {
+            ...data,
+            items: [
+              ...tracks.map((item, i) => ({
+                ...item,
+                audioFeatures: audio_features[i],
+              })),
+            ],
+          }
+          setSearchResults(results)
+        })
+      })
+      .catch((error) => {
+        // TODO add better error handling
+        console.error('Fetch similar song error', error)
+      })
+      .finally(() => setAreSongsLoading(false))
+  }
+
+  const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(!cookies.get('hasViewedInfoPanel'))
   const [view, setView] = useState('search')
   const [searchView, setSearchView] = useState('byParams')
 
@@ -224,6 +263,7 @@ export const AdvancedSearchView = () => {
               setView={setView}
               setSearchResults={setSearchResults}
               genres={genres}
+              setIsInfoPanelOpen={setIsInfoPanelOpen}
             />
           )}
           {searchView === 'byName' && (
@@ -271,6 +311,8 @@ export const AdvancedSearchView = () => {
                 activePlaylistId={activePlaylistId}
                 isSavingToPlaylist={isSavingToPlaylist}
                 activePlaylist={activePlaylist}
+                setView={setView}
+                handleSearchSimilarSong={handleSearchSimilarSong}
               />
             </>
           ) : (
@@ -278,7 +320,13 @@ export const AdvancedSearchView = () => {
           )}
         </ResultsContainer>
       )}
-      <InfoPanel isOpen={isInfoPanelOpen} close={() => setIsInfoPanelOpen(false)} />
+      <InfoPanel
+        isOpen={isInfoPanelOpen}
+        close={() => {
+          cookies.set('hasViewedInfoPanel', 'true')
+          setIsInfoPanelOpen(false)
+        }}
+      />
     </Container>
   )
 }

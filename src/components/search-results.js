@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { colors } from '../consts'
 import { Row, ExplicitIcon } from './row'
 
-const TABLE_WIDTH = 32 + 216 + 24 + 148 + 54 + 60 + 70 * 8 + 48 + 54 + 56 + 25 + 42
+const TABLE_WIDTH = 40 * 3 + 216 + 24 + 148 + 54 + 60 + 70 * 8 + 48 + 54 + 56 + 32
 
 const TableHeader = styled.div`
   height: 40px;
@@ -19,7 +19,7 @@ const TableBody = styled.div`
   font-size: 16px;
 
   & > div {
-    height: 36px;
+    height: 40px;
     padding: 4px 6px;
   }
 `
@@ -29,7 +29,7 @@ const Table = styled.div`
   overflow-x: scroll;
   overflow-y: hidden;
   height: calc(100vh - 64px - 64px);
-  width: ${TABLE_WIDTH}px;
+  width: ${TABLE_WIDTH + 2}px;
   max-width: 100vw;
   margin: 0 auto;
   border-right: 1px solid ${colors.gray};
@@ -38,8 +38,9 @@ const Table = styled.div`
   ${TableHeader}, ${TableBody} {
     display: grid;
     grid-template-columns:
-      [playpause] 32px [name] 216px [explicit] 24px [artist] 148px [duration] 54px [bpm] 60px repeat(8, 70px [stats])
-      [key] 48px [db] 54px [mod] 56px [time] 25px [save] 42px;
+      repeat(3, 40px [controls])
+      [name] 216px [explicit] 24px [artist] 148px [duration] 54px [bpm] 60px repeat(8, 70px [stats])
+      [key] 48px [db] 54px [mod] 56px [time] 32px;
   }
 `
 
@@ -61,10 +62,31 @@ const HeaderItem = styled.div`
   }
 `
 
+const HeaderItemControls = styled(HeaderItem)`
+  grid-column: span 3;
+
+  p {
+    bottom: 4px;
+    left: 50%;
+    transform: rotate(-13deg) translateX(-50%);
+  }
+`
+
 const StyledExplicitIcon = styled(ExplicitIcon)`
   cursor: pointer;
   position: absolute;
   bottom: 4px;
+`
+
+const ResultsEnd = styled.p`
+  grid-column: 1 / -1;
+  text-align: center;
+  height: 32px;
+
+  span {
+    color: ${colors.spotifyGreen};
+    cursor: pointer;
+  }
 `
 
 export const SearchResults = ({
@@ -77,11 +99,17 @@ export const SearchResults = ({
   activePlaylistId,
   isSavingToPlaylist,
   activePlaylist,
+  setView,
+  handleSearchSimilarSong,
 }) => {
   return (
     <Table>
       <TableHeader>
-        <HeaderItem></HeaderItem>
+        <HeaderItemControls>
+          {' '}
+          <p>Controls</p>
+        </HeaderItemControls>
+
         <HeaderItem onClick={() => handleSortSongs('name')}>
           <p>Name</p>
         </HeaderItem>
@@ -133,7 +161,6 @@ export const SearchResults = ({
         <HeaderItem onClick={() => handleSortSongs('time-signature')}>
           <p>Meter</p>
         </HeaderItem>
-        <HeaderItem></HeaderItem>
       </TableHeader>
       <TableBody>
         {!!searchResults?.items?.length &&
@@ -149,8 +176,12 @@ export const SearchResults = ({
               activePlaylistId={activePlaylistId}
               isSavingToPlaylist={isSavingToPlaylist === song.id}
               isSaved={!!activePlaylist && activePlaylist.items.some(({ track }) => track.id === song.id)}
+              handleSearchSimilarSong={handleSearchSimilarSong}
             />
           ))}
+        <ResultsEnd>
+          That's all! <span onClick={() => setView('search')}>Search again</span>
+        </ResultsEnd>
       </TableBody>
     </Table>
   )

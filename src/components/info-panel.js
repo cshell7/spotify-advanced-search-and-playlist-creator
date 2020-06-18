@@ -5,11 +5,15 @@ import { AuthButton } from './auth-button'
 import { colors, audioFeaturesDescriptions } from '../consts'
 import infoIcon from '../img/info-icon.png'
 import { CloseButton } from './close-button'
+import { PlayPauseButton, AddButton, SimilarsButton, ExplicitIcon } from './row'
+import playIcon from '../img//play-icon.png'
+
 const Panel = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  width: 300px;
+  width: 400px;
+  max-width: calc(100vw - 80px);
   height: 100%;
   padding: 32px 16px;
   color: ${colors.spotifyBlack};
@@ -28,20 +32,22 @@ const Panel = styled.div`
 
 const PanelHeader = styled.h4`
   text-align: center;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 400;
   margin: 0;
 `
 
 const Label = styled.h2`
-  font-size: 14px;
+  display: flex;
+  font-size: 16px;
   margin: 0;
   margin-top: 16px;
   font-weight: 600;
+  align-items: center;
 `
 
 const Description = styled.p`
-  font-size: 12px;
+  font-size: ${({ large }) => (large ? 16 : 14)}px;
   margin: 0;
 `
 
@@ -65,21 +71,92 @@ const Background = styled.div`
   cursor: pointer;
 `
 
+const ReAuthContainer = styled.div`
+  display: flex;
+`
+
+const ControlsContainer = styled.div`
+  display: flex;
+  padding: 4px;
+  align-items: center;
+
+  p {
+    margin: 0;
+    padding-left: 8px;
+    align-self: center;
+  }
+`
+const Control = styled.div`
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 32px;
+  background-color: ${colors.spotifyBlack};
+`
+
+const ExplicitIconContainer = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  width: 18px;
+  background-color: ${colors.spotifyBlack};
+  margin-right: 8px;
+`
+
 export const InfoPanel = ({ isOpen, close = () => {} }) => {
   return (
     <>
       <Panel isOpen={isOpen}>
         <CloseButton onClick={close} />
         <PanelHeader>Info</PanelHeader>
-        <AuthButton />
         <Label>How to use:</Label>
-        <Description>
+        <Description large>
           Find the perfect song for you playlist by searching by any number of params. The only required param is
           'genre' and you can pick up to three of those. You can click on the column headers to sort the results. Select
-          a playlist(if you don't have any listed go created on in your spotify app) and then press the '+' button on
-          the right of the table to add that song to your playlist.
+          a playlist (if you don't have any listed go create one in the Spotify app then refresh this page) and then
+          press the '+' button to add that song to your playlist. The results table is scrollable both horizontally and
+          vertically.
         </Description>
         <Divider />
+        <ReAuthContainer>
+          <p>If your auth expires click here:</p>
+          <AuthButton />
+        </ReAuthContainer>
+        <Divider />
+        <Label>Controls</Label>
+        <Description>
+          <ControlsContainer>
+            <Control>
+              <PlayPauseButton src={playIcon} />
+            </Control>
+            <p>Play/Pause a 30s preview of the song if one is available.</p>
+          </ControlsContainer>
+          <ControlsContainer>
+            <Control>
+              <AddButton />
+            </Control>
+            <p>Add this song to your selected playlist.</p>
+          </ControlsContainer>
+          <ControlsContainer>
+            <Control>
+              <SimilarsButton>S</SimilarsButton>
+            </Control>
+            <p>Search for song similar to this song.</p>
+          </ControlsContainer>
+        </Description>
+        <Divider />
+        <Label>Name</Label>
+        <Description>The name of the song. Click this to open the song in the Spotify app.</Description>
+        <Label>
+          <ExplicitIconContainer>
+            <ExplicitIcon />
+          </ExplicitIconContainer>
+          Explicit
+        </Label>
+        <Description>Whether or not the track has explicit lyrics</Description>
         {Object.values(audioFeaturesDescriptions).map(({ label, description }, i) => (
           <Fragment key={i}>
             <Label>{label}</Label>

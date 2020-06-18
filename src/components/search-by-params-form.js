@@ -36,6 +36,12 @@ const SectionDescription = styled.p`
     margin-left: auto;
     font-size: 12px;
   }
+
+  span {
+    color: ${colors.spotifyGreen};
+    cursor: pointer;
+    padding: 0 3px;
+  }
 `
 
 const Note = styled.p`
@@ -52,7 +58,7 @@ const GenreContainer = styled.div`
 const Genre = styled.div`
   flex: 1 1 auto;
   padding: 4px;
-  max-width: 50%;
+  max-width: 150px;
 `
 
 const GenreButton = styled(Button)`
@@ -145,7 +151,7 @@ const ResetButton = styled(Button)`
   }
 `
 
-export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResults, genres }) => {
+export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResults, genres, setIsInfoPanelOpen }) => {
   const { fetchData } = useSpotityAPI()
 
   const [genreSeeds, setGenreSeeds] = useState([])
@@ -186,7 +192,7 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
       ...(!!tempo && { target_tempo: tempo }),
       ...(!!mode && { target_mode: mode }),
       ...(!!key && { target_key: key }),
-      limit: 20,
+      limit: 25,
       market: 'US',
     }
     fetchData(`recommendations${objectToQueryParamString(params)}`)
@@ -247,7 +253,9 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
           })}
         </GenreContainer>
       )}
-      <SectionDescription>Step 2: Select attributes to search by</SectionDescription>
+      <SectionDescription>
+        Step 2: Select <span onClick={() => setIsInfoPanelOpen(true)}>attributes</span> to search by
+      </SectionDescription>
       <Note>
         Note: These are all optional. Leave the field blank if you don't want that attribure to affect your search. Have
         fun and best of luck creating that perfect playlist!

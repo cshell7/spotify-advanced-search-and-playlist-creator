@@ -17,7 +17,11 @@ export const ErrorView = () => {
     <Card.Container>
       <Card>
         <Card.Header>We're doomed!!! Well probably not but something did go wrong with this app</Card.Header>
-        <Card.Copy>{error?.message || 'Try refreshing the page'}</Card.Copy>
+        <Card.Copy>
+          <b>Try refreshing the page</b>
+          <br />
+          <small>{error?.message}</small>
+        </Card.Copy>
         <Card.Copy>{error?.link ? <Link href={error.link}>{error.code}</Link> : error?.code}</Card.Copy>
       </Card>
     </Card.Container>
