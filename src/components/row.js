@@ -142,8 +142,6 @@ export const Row = ({
     return `${!!hours ? `${hours}:` : ''}${minutes}:${`${seconds}`.length === 1 ? '0' : ''}${seconds}`
   }
 
-  if (isSavingToPlaylist) console.log({ isSavingToPlaylist })
-
   return (
     <>
       <TableCell isOdd={isOdd(index)} onClick={() => handlePlayPauseSong(song)} centered>
