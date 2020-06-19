@@ -75,18 +75,7 @@ const ReAuthContainer = styled.div`
   display: flex;
 `
 
-const ControlsContainer = styled.div`
-  display: flex;
-  padding: 4px;
-  align-items: center;
-
-  p {
-    margin: 0;
-    padding-left: 8px;
-    align-self: center;
-  }
-`
-const Control = styled.div`
+const Control = styled.span`
   display: flex;
   flex-shrink: 0;
   justify-content: center;
@@ -94,6 +83,22 @@ const Control = styled.div`
   height: 32px;
   width: 32px;
   background-color: ${colors.spotifyBlack};
+`
+
+const ControlsContainer = styled.span`
+  display: flex;
+  padding: 4px;
+  align-items: center;
+
+  span {
+    margin: 0;
+    padding-left: 8px;
+    align-self: center;
+  }
+
+  ${Control} {
+    padding: 0;
+  }
 `
 
 const ExplicitIconContainer = styled.div`
@@ -132,19 +137,19 @@ export const InfoPanel = ({ isOpen, close = () => {} }) => {
             <Control>
               <PlayPauseButton src={playIcon} />
             </Control>
-            <p>Play/Pause a 30s preview of the song if one is available.</p>
+            <span>Play/Pause a 30s preview of the song if one is available.</span>
           </ControlsContainer>
           <ControlsContainer>
             <Control>
               <AddButton />
             </Control>
-            <p>Add this song to your selected playlist.</p>
+            <span>Add this song to your selected playlist.</span>
           </ControlsContainer>
           <ControlsContainer>
             <Control>
               <SimilarsButton>S</SimilarsButton>
             </Control>
-            <p>Search for song similar to this song.</p>
+            <span>Search for song similar to this song.</span>
           </ControlsContainer>
         </Description>
         <Divider />

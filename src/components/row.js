@@ -61,6 +61,10 @@ const AddedIcon = styled.img.attrs(() => ({
 }))`
   height: 24px;
   width: 24px;
+  cursor: pointer;
+  transition: transform 1s;
+  transform: rotate(0);
+  ${({ isLoading }) => isLoading && `transform: rotate(180deg);`}
 `
 
 export const ExplicitIcon = styled.img.attrs(() => ({
@@ -102,6 +106,7 @@ export const Row = ({
   isSavingToPlaylist,
   isSaved,
   handleSearchSimilarSong,
+  handleRemoveSongFromPlaylist,
 }) => {
   const { name, id, artists, explicit, duration_ms, popularity, audioFeatures, preview_url, uri } = song
   const {
@@ -149,7 +154,10 @@ export const Row = ({
       </TableCell>
       <TableCell isOdd={isOdd(index)} centered>
         {isSaved ? (
-          <AddedIcon />
+          <AddedIcon
+            isLoading={isSavingToPlaylist}
+            onClick={() => !!activePlaylistId && handleRemoveSongFromPlaylist(uri, id)}
+          />
         ) : (
           <AddButton
             isLoading={isSavingToPlaylist}

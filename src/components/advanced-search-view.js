@@ -13,7 +13,6 @@ import { SearchByParamsForm } from './search-by-params-form'
 import { CloseButton } from './close-button'
 import { Loader } from './loader'
 import { Input } from './input'
-import { objectToQueryParamString } from 'utils-url-query-params'
 
 const Container = styled.div`
   position: relative;
@@ -66,6 +65,29 @@ const StyledSelect = styled(Select)`
   }
 `
 
+const AddAllButton = styled(Button)`
+  color: ${colors.white};
+  background-color: ${colors.spotifyBlack};
+  border: 1px solid ${colors.spotifyGreen};
+  font-size: 14px;
+  font-weight: 100;
+  padding: 6px 8px;
+
+  &:active {
+    border: 1px solid ${colors.spotifyGreen};
+  }
+
+  &:focus {
+    border: 1px solid ${colors.spotifyGreen};
+    outline: 1px solid ${colors.white};
+    outline-offset: 1px;
+  }
+
+  &[disabled] {
+    border: 1px solid ${colors.gray};
+  }
+`
+
 const ResultsContainer = styled.div`
   width: 100%;
 `
@@ -85,20 +107,20 @@ const ResultsHeader = styled.div`
     margin-left: auto;
     height: 24px;
   }
+
+  ${AddAllButton} {
+    margin-left: 16px;
+  }
 `
 
 const NoResultsMessage = styled.p`
   text-align: center;
 `
 
-const PlaylistLabel = styled.label``
-
 const PrivacySelect = styled(Select)`
   &&& {
     color: ${({ value }) => (!!value ? colors.white : colors.gray)};
   }
-  color: ${({ value }) => console.log({ value }, !!value)};
-  color: red;
 `
 
 const CreatePlaylistForm = styled.div`
@@ -229,7 +251,8 @@ export const AdvancedSearchView = () => {
   const [createPlaylistFormInput, setCreatePlaylistFormInput] = useState({})
   const handleCreatePlaylistSubmit = () => {
     fetchData(`users/${user.id}/playlists`, 'POST', JSON.stringify(createPlaylistFormInput))
-      .then(() => {
+      .then(({ id }) => {
+        setActivePlaylistId(id)
         return fetchData('me/playlists')
           .then((playlists) => setPlaylists(playlists))
           .catch((error) => setPlaylistsError(error))
@@ -241,8 +264,26 @@ export const AdvancedSearchView = () => {
   const handleFetchActivePlaylist = useCallback(() => {
     fetchData(`playlists/${activePlaylistId}/tracks`).then((data) => {
       setActivePlaylist(data)
+      if (data?.next) handleFetchActivePlaylistRemaining(data)
+      else setActivePlaylist(data)
     })
   }, [activePlaylistId, fetchData, setActivePlaylist])
+
+  const handleFetchActivePlaylistRemaining = (data) => {
+    const { next, items: previousItems } = data
+    fetchData(`playlists/${activePlaylistId}/tracks?${next.replace(/.*[?|#]/, '')}`).then((newData) => {
+      if (newData?.next)
+        handleFetchActivePlaylistRemaining({
+          ...newData,
+          items: [...previousItems, ...newData?.items],
+        })
+      else
+        setActivePlaylist({
+          ...newData,
+          items: [...previousItems, ...newData?.items],
+        })
+    })
+  }
 
   useEffect(() => {
     if (activePlaylistId) handleFetchActivePlaylist()
@@ -251,6 +292,20 @@ export const AdvancedSearchView = () => {
   const handleSaveSongToPlaylist = (uri, id) => {
     setIsSavingToPlaylist(id)
     fetchData(`playlists/${activePlaylistId}/tracks?uris=${uri}`, 'POST')
+      .then(() => {
+        // NOTE this only fetches the first 100 so playlists over this length wont show saved songs.
+        return handleFetchActivePlaylist()
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setIsSavingToPlaylist(false))
+  }
+
+  const handleRemoveSongFromPlaylist = (uri, id) => {
+    const body = {
+      tracks: [{ uri }],
+    }
+    setIsSavingToPlaylist(id)
+    fetchData(`playlists/${activePlaylistId}/tracks`, 'DELETE', JSON.stringify(body))
       .then(() => {
         return handleFetchActivePlaylist()
       })
@@ -288,6 +343,8 @@ export const AdvancedSearchView = () => {
   const [view, setView] = useState('search')
   const [searchView, setSearchView] = useState('byParams')
 
+  const savedTracks = activePlaylist?.items.map(({ track }) => track.id) || []
+
   return (
     <Container>
       <StyledInfoPannelButton onClick={() => setIsInfoPanelOpen(!isInfoPanelOpen)} />
@@ -324,7 +381,6 @@ export const AdvancedSearchView = () => {
       {view === 'results' && (
         <ResultsContainer>
           <ResultsHeader>
-            <PlaylistLabel for="playlists">Playlist: </PlaylistLabel>
             <StyledSelect
               id="playlists"
               name="playlists"
@@ -342,6 +398,19 @@ export const AdvancedSearchView = () => {
                 ))}
               <option value="_new_">-New playlist-</option>
             </StyledSelect>
+            <AddAllButton
+              disabled={!searchResults?.items || !activePlaylistId}
+              onClick={() => {
+                const songs = searchResults?.items
+                  .map(({ uri }) => uri)
+                  .filter((song) => {
+                    return !activePlaylist.items.some(({ track }) => track?.uri === song)
+                  })
+                handleSaveSongToPlaylist(songs.join(','))
+              }}
+            >
+              Add all songs
+            </AddAllButton>
             <Button onClick={() => setView('search')}>Search Again</Button>
           </ResultsHeader>
           {areSongsLoading ? (
@@ -357,9 +426,10 @@ export const AdvancedSearchView = () => {
                 handlePlayPauseSong={handlePlayPauseSong}
                 activePlaylistId={activePlaylistId}
                 isSavingToPlaylist={isSavingToPlaylist}
-                activePlaylist={activePlaylist}
+                savedTracks={savedTracks}
                 setView={setView}
                 handleSearchSimilarSong={handleSearchSimilarSong}
+                handleRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
               />
             </>
           ) : (
@@ -370,7 +440,6 @@ export const AdvancedSearchView = () => {
       {view === 'createPlaylist' && (
         <StyledCard>
           <CloseButton onClick={() => setView('results')} isWhite />
-          {console.log({ createPlaylistFormInput })}
           <Card.Header>Create new playlist</Card.Header>
           <CreatePlaylistForm>
             <Input

@@ -98,9 +98,10 @@ export const SearchResults = ({
   handlePlayPauseSong,
   activePlaylistId,
   isSavingToPlaylist,
-  activePlaylist,
   setView,
   handleSearchSimilarSong,
+  handleRemoveSongFromPlaylist,
+  savedTracks,
 }) => {
   return (
     <Table>
@@ -175,8 +176,9 @@ export const SearchResults = ({
               handleSaveSongToPlaylist={handleSaveSongToPlaylist}
               activePlaylistId={activePlaylistId}
               isSavingToPlaylist={isSavingToPlaylist === song.id}
-              isSaved={!!activePlaylist && activePlaylist.items.some(({ track }) => track.id === song.id)}
+              isSaved={savedTracks.some((id) => id === song.id)}
               handleSearchSimilarSong={handleSearchSimilarSong}
+              handleRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
             />
           ))}
         <ResultsEnd>

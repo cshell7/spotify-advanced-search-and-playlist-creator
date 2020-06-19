@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "@c-shell/spotify-api-hook": "^1.3.0",
+    "@c-shell/spotify-api-hook": "^1.4.0",
     "@c-shell/utils-url-query-params": "^1.0.0",
     "date-fns": "^2.14.0",
     "gh-pages": "^3.0.0",
