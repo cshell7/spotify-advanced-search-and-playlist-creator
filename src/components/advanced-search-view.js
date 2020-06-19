@@ -61,7 +61,7 @@ const StyledSelect = styled(Select)`
   }
 `}
   &&& {
-    margin-left: 16px;
+    margin-left: 0;
   }
 `
 
@@ -293,7 +293,6 @@ export const AdvancedSearchView = () => {
     setIsSavingToPlaylist(id)
     fetchData(`playlists/${activePlaylistId}/tracks?uris=${uri}`, 'POST')
       .then(() => {
-        // NOTE this only fetches the first 100 so playlists over this length wont show saved songs.
         return handleFetchActivePlaylist()
       })
       .catch((error) => console.log(error))

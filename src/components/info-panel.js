@@ -119,11 +119,10 @@ export const InfoPanel = ({ isOpen, close = () => {} }) => {
         <PanelHeader>Info</PanelHeader>
         <Label>How to use:</Label>
         <Description large>
-          Find the perfect song for you playlist by searching by any number of params. The only required parameters is
+          Find the perfect song for you playlist by searching by any number of params. The only required parameter is
           'genre' and you can pick up to three of those. You can click on the column headers to sort the results. Select
-          a playlist (if you don't have any listed go create one in the Spotify app then refresh this page) and then
-          press the '+' button to add that song to your playlist. The results table is scrollable both horizontally and
-          vertically.
+          a playlist (or create a new one) and then press the '+' button to add that song to your playlist. The results
+          table is scrollable both horizontally and vertically.
         </Description>
         <Divider />
         <ReAuthContainer>
