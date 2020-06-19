@@ -94,13 +94,13 @@ export const SearchResults = ({
   activeSong,
   isPlaying,
   handleSortSongs,
-  handleSaveSongToPlaylist,
+  saveSongToPlaylist,
   handlePlayPauseSong,
   activePlaylistId,
   isSavingToPlaylist,
   setView,
   handleSearchSimilarSong,
-  handleRemoveSongFromPlaylist,
+  removeSongFromPlaylist,
   savedTracks,
 }) => {
   return (
@@ -164,8 +164,8 @@ export const SearchResults = ({
         </HeaderItem>
       </TableHeader>
       <TableBody>
-        {!!searchResults?.items?.length &&
-          searchResults?.items.map((song, i) => (
+        {!!searchResults?.length &&
+          searchResults.map((song, i) => (
             <Row
               key={song.id}
               song={song}
@@ -173,12 +173,12 @@ export const SearchResults = ({
               handlePlayPauseSong={handlePlayPauseSong}
               activeSong={activeSong}
               isPlaying={isPlaying && song.id === activeSong?.id}
-              handleSaveSongToPlaylist={handleSaveSongToPlaylist}
+              saveSongToPlaylist={saveSongToPlaylist}
               activePlaylistId={activePlaylistId}
               isSavingToPlaylist={isSavingToPlaylist === song.id}
               isSaved={savedTracks.some((id) => id === song.id)}
               handleSearchSimilarSong={handleSearchSimilarSong}
-              handleRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+              removeSongFromPlaylist={removeSongFromPlaylist}
             />
           ))}
         <ResultsEnd>

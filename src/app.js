@@ -8,7 +8,7 @@ import { AdvancedSearchView } from './components/advanced-search-view'
 
 const clientId = process.env.REACT_APP_CLIENT_ID
 
-export const Page = () => {
+export const App = () => {
   const { isAuthed, error } = useSpotityAPI()
 
   if (!clientId) return <NoClientIdView />

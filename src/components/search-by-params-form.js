@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSpotityAPI } from '@c-shell/spotify-api-hook'
 import { objectToQueryParamString } from '@c-shell/utils-url-query-params'
+
 import { colors, pitches } from '../consts'
 
-import { Button } from './button'
-import { Input as BaseInput } from './input'
-import { Select as BaseSelect } from './select'
+import { capitalizeFirstLetter, getCleanedTracks } from '../utils'
 
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1)
+import { Select, Input, Button } from './form-elements'
 
 const inputsWithZeroOneRange = [
   'acousticness',
@@ -20,10 +19,30 @@ const inputsWithZeroOneRange = [
   'valence',
 ]
 
-const SearchByParamsFormContainer = styled.form`
+const StyledSearchByParamsForm = styled.form`
   display: flex;
   flex-wrap: wrap;
-  padding: 16px 0 0;
+  padding-top: 16px;
+`
+
+const GenreContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+`
+const Genre = styled.div`
+  flex: 1 1 auto;
+  padding: 4px;
+  max-width: 150px;
+`
+
+const GenreButton = styled(Button).attrs(() => ({
+  outline: true,
+  highlightFilled: true,
+}))`
+  width: 100%;
+  padding: 6px 8px;
 `
 
 const SectionDescription = styled.p`
@@ -49,68 +68,11 @@ const Note = styled.p`
   font-size: 12px;
 `
 
-const GenreContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-`
-const Genre = styled.div`
-  flex: 1 1 auto;
-  padding: 4px;
-  max-width: 150px;
-`
-
-const GenreButton = styled(Button)`
-  width: 100%;
-  color: ${colors.white};
-  background-color: ${colors.spotifyBlack};
-  border: 1px solid ${({ isSelected }) => (isSelected ? colors.spotifyGreen : colors.gray)};
-  font-size: 14px;
-  font-weight: 100;
-  padding: 6px 8px;
-
-  &:active {
-    border: 1px solid ${({ isSelected }) => (isSelected ? colors.spotifyGreen : colors.gray)};
-  }
-
-  &:focus {
-    border: 1px solid ${({ isSelected }) => (isSelected ? colors.spotifyGreen : colors.gray)};
-    outline: 1px solid ${colors.white};
-    outline-offset: 1px;
-  }
-`
-
 const Section = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   margin: -8px -16px;
-`
-
-const Input = styled(BaseInput)`
-  border: 1px solid ${({ value }) => (!!value ? colors.spotifyGreen : colors.gray)};
-  &:active {
-    border: 1px solid ${({ value }) => (value ? colors.spotifyGreen : colors.gray)};
-  }
-
-  &:focus {
-    border: 1px solid ${({ value }) => (value ? colors.spotifyGreen : colors.gray)};
-    outline: 1px solid ${colors.white};
-    outline-offset: 1px;
-  }
-`
-const Select = styled(BaseSelect)`
-  border: 1px solid ${({ value }) => (!!value ? colors.spotifyGreen : colors.gray)};
-  &:active {
-    border: 1px solid ${({ value }) => (value ? colors.spotifyGreen : colors.gray)};
-  }
-
-  &:focus {
-    border: 1px solid ${({ value }) => (value ? colors.spotifyGreen : colors.gray)};
-    outline: 1px solid ${colors.white};
-    outline-offset: 1px;
-  }
 `
 
 const InputContainer = styled.div`
@@ -121,8 +83,6 @@ const InputContainer = styled.div`
 
   ${Input}, ${Select} {
     flex: 1 1 auto;
-    color: ${colors.white};
-    background-color: rgba(0, 0, 0, 0);
   }
 `
 const Label = styled.label`
@@ -137,21 +97,14 @@ const ButtonContainer = styled.div`
   width: 100%;
 `
 
-const ResetButton = styled(Button)`
-  background-color: rgba(0, 0, 0, 0);
-  border: 1px solid ${colors.spotifyGreen};
-  &:active {
-    border: 1px solid ${colors.spotifyGreen};
-  }
-
-  &:focus {
-    border: 1px solid ${colors.spotifyGreen};
-    outline: 1px solid ${colors.white};
-    outline-offset: 1px;
-  }
-`
-
-export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResults, genres, setIsInfoPanelOpen }) => {
+export const SearchByParamsForm = ({
+  setAreSongsLoading,
+  setView,
+  setSearchResults,
+  genres,
+  setIsInfoPanelOpen,
+  setSongError,
+}) => {
   const { fetchData } = useSpotityAPI()
 
   const [genreSeeds, setGenreSeeds] = useState([])
@@ -192,29 +145,26 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
       ...(!!tempo && { target_tempo: tempo }),
       ...(!!mode && { target_mode: mode }),
       ...(!!key && { target_key: key }),
-      limit: 25,
+      limit: 50,
       market: 'US',
     }
-    fetchData(`recommendations${objectToQueryParamString(params)}`)
+    return fetchData(`recommendations${objectToQueryParamString(params)}`)
       .then((data) => {
         const tracks = data?.tracks?.items || data?.tracks || [] // The payload structure is differnt for the tracks api vs the recommendations api
         const songIds = tracks.map(({ id }) => id)
         return fetchData(`audio-features?ids=${songIds}`).then(({ audio_features }) => {
-          const results = {
-            ...data,
-            items: [
-              ...tracks.map((item, i) => ({
-                ...item,
-                audioFeatures: audio_features[i],
-              })),
-            ],
-          }
-          setSearchResults(results)
+          const results = [
+            ...tracks.map((item, i) => ({
+              ...item,
+              audioFeatures: audio_features[i],
+            })),
+          ]
+          setSearchResults(getCleanedTracks(results))
         })
       })
       .catch((error) => {
-        // TODO add better error handling
         console.error('Fetch recommendation error', error)
+        setSongError(error)
       })
       .finally(() => setAreSongsLoading(false))
   }
@@ -225,7 +175,7 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
   }
 
   return (
-    <SearchByParamsFormContainer
+    <StyledSearchByParamsForm
       id="form"
       onSubmit={(event) => {
         event.preventDefault()
@@ -257,7 +207,7 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
         Step 2: Select <span onClick={() => setIsInfoPanelOpen(true)}>attributes</span> to search by
       </SectionDescription>
       <Note>
-        Note: These are all optional. Leave the field blank if you don't want that attribure to affect your search. Have
+        Note: These are all optional. Leave the field blank if you don't want that attribute to affect your search. Have
         fun and best of luck creating that perfect playlist!
       </Note>
       <Section>
@@ -265,6 +215,8 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
           <InputContainer key={i}>
             <Label>{capitalizeFirstLetter(item)}</Label>
             <Select
+              highlightFilled
+              outline
               id={item}
               name={item}
               onChange={({ target }) =>
@@ -293,6 +245,8 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
         <InputContainer>
           <Label>Popularity (0-100)</Label>
           <Input
+            highlightFilled
+            outline
             id="popularity"
             name="popularity"
             onChange={({ target }) =>
@@ -310,6 +264,8 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
         <InputContainer>
           <Label>Time Signature</Label>
           <Input
+            highlightFilled
+            outline
             id="timeSignature"
             name="timeSignature"
             onChange={({ target }) =>
@@ -327,6 +283,8 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
         <InputContainer>
           <Label>Tempo</Label>
           <Input
+            highlightFilled
+            outline
             id="tempo"
             name="tempo"
             onChange={({ target }) =>
@@ -343,6 +301,8 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
         <InputContainer>
           <Label>Mode</Label>
           <Select
+            highlightFilled
+            outline
             id="mode"
             name="mode"
             onChange={({ target }) =>
@@ -361,6 +321,8 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
         <InputContainer>
           <Label>Key</Label>
           <Select
+            highlightFilled
+            outline
             id="key"
             name="key"
             onChange={({ target }) =>
@@ -384,10 +346,10 @@ export const SearchByParamsForm = ({ setAreSongsLoading, setView, setSearchResul
         <Button type="submit" disabled={!genreSeeds.length}>
           Search
         </Button>
-        <ResetButton type="button" onClick={handleReset}>
+        <Button type="button" outline onClick={handleReset}>
           Reset
-        </ResetButton>
+        </Button>
       </ButtonContainer>
-    </SearchByParamsFormContainer>
+    </StyledSearchByParamsForm>
   )
 }

@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+
 import { colors } from './consts'
 
 export const GlobalStyles = createGlobalStyle`
@@ -7,7 +8,7 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${colors.spotifyBlack};
     font-family: Helvetica,Arial,sans-serif;
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.4;
     margin: 0;
     font-weight: 100;
   }

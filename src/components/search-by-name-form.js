@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSpotityAPI } from '@c-shell/spotify-api-hook'
 
-import { Button } from './button'
-import { Input } from './input'
+import { getCleanedTracks } from '../utils'
+
+import { Input, Button } from './form-elements'
 
 const SearchByName = styled.div`
   display: grid;
@@ -16,28 +17,29 @@ const SearchByName = styled.div`
   }
 `
 
-export const SearchByNameForm = ({ setAreSongsLoading, setView, setSearchResults }) => {
+export const SearchByNameForm = ({ setAreSongsLoading, setView, setSearchResults, setSongError }) => {
   const { fetchData } = useSpotityAPI()
   const [searchInputValue, setSearchInputValue] = useState('')
 
   const handleSearchByName = () => {
     setAreSongsLoading(true)
-    fetchData(`search?q=${encodeURIComponent(searchInputValue)}&type=track&limit=25`)
+    return fetchData(`search?q=${encodeURIComponent(searchInputValue)}&type=track&limit=50`)
       .then(({ tracks }) => {
         const songIds = tracks.items.map(({ id }) => id)
         return fetchData(`audio-features?ids=${songIds}`).then(({ audio_features: audioFeatures }) => {
-          const results = {
-            ...tracks,
-            items: [
-              ...tracks.items.map((item, i) => ({
-                ...item,
-                audioFeatures: audioFeatures[i],
-              })),
-            ],
-          }
-          setSearchResults(results)
+          const results = [
+            ...tracks.items.map((item, i) => ({
+              ...item,
+              audioFeatures: audioFeatures[i],
+            })),
+          ]
+          setSearchResults(getCleanedTracks(results))
           localStorage.setItem('results', JSON.stringify(results))
         })
+      })
+      .catch((error) => {
+        console.error('Fetch songs by name error', error)
+        setSongError(error)
       })
       .finally(() => setAreSongsLoading(false))
   }
@@ -45,6 +47,7 @@ export const SearchByNameForm = ({ setAreSongsLoading, setView, setSearchResults
   return (
     <SearchByName>
       <Input
+        outline
         placeholder="Song name.."
         value={searchInputValue}
         onChange={({ target }) => setSearchInputValue(target.value)}

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { SCOPE } from '../consts'
 
-import { Button } from './button'
+import { Button } from './form-elements'
 
 const redirectUri = process.env.REACT_APP_REDIRECT_URL
 

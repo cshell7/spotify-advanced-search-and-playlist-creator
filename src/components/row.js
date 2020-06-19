@@ -7,7 +7,7 @@ import checkIcon from '../img/check-icon.png'
 import explicitIcon from '../img/explicit-icon.png'
 import playIcon from '../img//play-icon.png'
 import pauseIcon from '../img/pause-icon.png'
-import { Button } from './button'
+import { Button } from './form-elements'
 
 export const SimilarsButton = styled(Button)`
   color: ${colors.white};
@@ -100,13 +100,13 @@ export const Row = ({
   song,
   handlePlayPauseSong,
   isPlaying,
-  handleSaveSongToPlaylist,
+  saveSongToPlaylist,
   activePlaylistId,
   index,
   isSavingToPlaylist,
   isSaved,
   handleSearchSimilarSong,
-  handleRemoveSongFromPlaylist,
+  removeSongFromPlaylist,
 }) => {
   const { name, id, artists, explicit, duration_ms, popularity, audioFeatures, preview_url, uri } = song
   const {
@@ -156,13 +156,13 @@ export const Row = ({
         {isSaved ? (
           <AddedIcon
             isLoading={isSavingToPlaylist}
-            onClick={() => !!activePlaylistId && handleRemoveSongFromPlaylist(uri, id)}
+            onClick={() => !!activePlaylistId && removeSongFromPlaylist(uri, id)}
           />
         ) : (
           <AddButton
             isLoading={isSavingToPlaylist}
             disabled={!activePlaylistId}
-            onClick={() => !!activePlaylistId && handleSaveSongToPlaylist(uri, id)}
+            onClick={() => !!activePlaylistId && saveSongToPlaylist(uri, id)}
           />
         )}
       </TableCell>

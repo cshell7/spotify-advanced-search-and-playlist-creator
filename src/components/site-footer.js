@@ -1,16 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import { colors, createdByLink, gitHubLink } from '../consts'
+
+import { colors, createdByLink, gitHubLink, feedbackLink, FOOTER_HEIGHT } from '../consts'
+
 import gitHubIcon from '../img/github-icon.png'
 
-const StyledPageFooter = styled.footer`
+const StyledSiteFooter = styled.footer`
   display: flex;
   width: 100vw;
-  height: 24px;
-  border-top: 1px solid ${colors.gray};
+  height: ${FOOTER_HEIGHT}px;
   align-items: center;
   justify-content: flex-end;
   padding: 0 16px;
+  border-top: 1px solid ${colors.gray};
   background-color: ${colors.spotifyBlack};
 `
 
@@ -19,9 +21,9 @@ const CreatedBy = styled.a.attrs(() => ({
   target: '_blank',
 }))`
   margin: 0;
-  font-size: 12px;
   padding-right: 8px;
   color: ${colors.white};
+  font-size: 12px;
   text-decoration: none;
 `
 const GitHubLink = styled.a.attrs(() => ({
@@ -41,7 +43,7 @@ const GitHubLogo = styled.img.attrs(() => ({
 
 const FeedbackLink = styled.a.attrs(() => ({
   target: '_blank',
-  href: 'https://forms.gle/15NVFsHshuJxV2u9A',
+  href: feedbackLink,
 }))`
   font-size: 12px;
   color: ${colors.spotifyGreen};
@@ -49,14 +51,14 @@ const FeedbackLink = styled.a.attrs(() => ({
   text-decoration: none;
 `
 
-export const PageFooter = () => {
+export const SiteFooter = () => {
   return (
-    <StyledPageFooter>
+    <StyledSiteFooter>
       <FeedbackLink>Have feedback?</FeedbackLink>
       <CreatedBy>Created by Calvin Shell</CreatedBy>
       <GitHubLink>
         <GitHubLogo />
       </GitHubLink>
-    </StyledPageFooter>
+    </StyledSiteFooter>
   )
 }

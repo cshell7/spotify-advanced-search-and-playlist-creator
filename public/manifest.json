@@ -1,8 +1,19 @@
 {
-  "short_name": "Spotify Adv. Search",
+  "short_name": "Spotify Adv Search",
   "name": "Spotify Advanced Search and Playlist Creator",
-  "icons": [],
-  "start_url": ".",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/app-icon.png",
+      "type": "image/png",
+      "sizes": "512"
+    },
+    {
+      "src": "/app-icon.svg",
+      "type": "image/svg",
+      "sizes": "512"
+    }
+  ],
   "display": "standalone",
   "theme_color": "#1DB954",
   "background_color": "#191414"

@@ -1,14 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { SpotifyAPIProvider } from '@c-shell/spotify-api-hook'
 import styled from 'styled-components'
+import { BrowserRouter } from 'react-router-dom'
+
+import { SpotifyAPIProvider } from '@c-shell/spotify-api-hook'
+import { SpotifyUserDataProvider } from './providers/user-data-provider'
+import { UserPlaylistsProvider } from './providers/playlists-provider'
+import { SpotifyGenresProvider } from './providers/genres-provider'
 
 import * as serviceWorker from './serviceWorker'
+
+import { HEADER_HEIGHT, FOOTER_HEIGHT } from './consts'
+
 import { GlobalStyles } from './global-styles'
-import { Page } from './page'
-import { PageHeader } from './components/page-header'
-import { PageFooter } from './components/page-footer'
+import { App } from './app'
+import { SiteHeader } from './components/site-header'
+import { SiteFooter } from './components/site-footer'
 
 const clientId = process.env.REACT_APP_CLIENT_ID
 
@@ -24,10 +31,8 @@ const Main = styled.main`
   display: flex;
   flex: 1 0 auto;
   overflow: hidden;
-  max-height: calc(100vh - 64px - 24px);
+  max-height: calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px);
 `
-
-// TODO add tracking all the places
 
 ReactDOM.render(
   <React.StrictMode>
@@ -35,11 +40,17 @@ ReactDOM.render(
     <AppContainer>
       <BrowserRouter>
         <SpotifyAPIProvider clientId={clientId}>
-          <PageHeader />
-          <Main>
-            <Page />
-          </Main>
-          <PageFooter />
+          <SpotifyUserDataProvider>
+            <UserPlaylistsProvider>
+              <SpotifyGenresProvider>
+                <SiteHeader />
+                <Main>
+                  <App />
+                </Main>
+                <SiteFooter />
+              </SpotifyGenresProvider>
+            </UserPlaylistsProvider>
+          </SpotifyUserDataProvider>
         </SpotifyAPIProvider>
       </BrowserRouter>
     </AppContainer>

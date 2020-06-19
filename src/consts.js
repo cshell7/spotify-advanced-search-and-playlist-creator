@@ -1,4 +1,40 @@
 export const SCOPE = 'playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private' // https://developer.spotify.com/documentation/general/guides/scopes
+export const HEADER_HEIGHT = 64
+export const FOOTER_HEIGHT = 24
+
+export const createdByLink = 'https://www.linkedin.com/in/calvinshell/'
+export const gitHubLink = 'https://github.com/cshell7/spotify-advanced-search-and-playlist-creator'
+export const feedbackLink = 'https://forms.gle/15NVFsHshuJxV2u9A'
+
+export const colors = {
+  spotifyGreen: '#1DB954',
+  spotifyBlack: '#191414',
+  white: '#FFFFFF',
+  blue: '#4C819E',
+  red: '#DA494A',
+  gray: '#707070',
+}
+
+export const breakpoints = {
+  sm: 600,
+  lg: 900,
+}
+
+export const pitches = {
+  0: 'C',
+  1: 'C♯/D♭',
+  2: 'D',
+  3: 'D♯/E♭',
+  4: 'E',
+  5: 'F',
+  6: 'F♯/G♭',
+  7: 'G',
+  8: 'G♯/A♭',
+  9: 'A',
+  10: 'A♯/B♭',
+  11: 'B',
+}
+
 export const audioFeaturesDescriptions = {
   tempo: {
     label: 'Tempo',
@@ -64,30 +100,3 @@ export const audioFeaturesDescriptions = {
       'An estimated overall time signature of a track. The time signature (meter) is a notational convention to specify how many beats are in each bar (or measure).',
   },
 }
-
-export const colors = {
-  spotifyGreen: '#1DB954',
-  spotifyBlack: '#191414',
-  white: '#FFFFFF',
-  blue: '#4C819E',
-  red: '#DA494A',
-  gray: '#707070',
-}
-
-export const pitches = {
-  0: 'C',
-  1: 'C♯/D♭',
-  2: 'D',
-  3: 'D♯/E♭',
-  4: 'E',
-  5: 'F',
-  6: 'F♯/G♭',
-  7: 'G',
-  8: 'G♯/A♭',
-  9: 'A',
-  10: 'A♯/B♭',
-  11: 'B',
-}
-
-export const createdByLink = 'https://www.linkedin.com/in/calvinshell/'
-export const gitHubLink = 'https://github.com/cshell7/spotify-advanced-search-and-playlist-creator'
