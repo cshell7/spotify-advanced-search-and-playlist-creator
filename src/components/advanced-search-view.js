@@ -12,6 +12,8 @@ import { SearchByNameForm } from './search-by-name-form'
 import { SearchByParamsForm } from './search-by-params-form'
 import { CloseButton } from './close-button'
 import { Loader } from './loader'
+import { Input } from './input'
+import { objectToQueryParamString } from 'utils-url-query-params'
 
 const Container = styled.div`
   position: relative;
@@ -31,7 +33,7 @@ const StyledCard = styled(Card)`
   margin-top: 24px;
   overflow-x: hidden;
   overflow-y: scroll;
-  height: calc(100vh - 64px - 64px);
+  max-height: calc(100vh - 64px - 64px);
 `
 
 const Tabs = styled.div`
@@ -90,6 +92,33 @@ const NoResultsMessage = styled.p`
 `
 
 const PlaylistLabel = styled.label``
+
+const PrivacySelect = styled(Select)`
+  &&& {
+    color: ${({ value }) => (!!value ? colors.white : colors.gray)};
+  }
+  color: ${({ value }) => console.log({ value }, !!value)};
+  color: red;
+`
+
+const CreatePlaylistForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+
+  ${Input}, ${PrivacySelect} {
+    color: ${colors.white};
+    margin-bottom: 16px;
+    width: 300px;
+    border: 1px solid ${colors.spotifyGreen};
+    background-color: ${colors.spotifyBlack};
+
+    &:focus {
+      border: 1px solid ${colors.spotifyGreen};
+    }
+  }
+`
 
 export const AdvancedSearchView = () => {
   const { fetchData } = useSpotityAPI()
@@ -192,6 +221,23 @@ export const AdvancedSearchView = () => {
   const [activePlaylist, setActivePlaylist] = useState()
   const [isSavingToPlaylist, setIsSavingToPlaylist] = useState(false)
 
+  const handleSetActivePlaylistId = (id) => {
+    if (id === '_new_') setView('createPlaylist')
+    else setActivePlaylistId(id)
+  }
+
+  const [createPlaylistFormInput, setCreatePlaylistFormInput] = useState({})
+  const handleCreatePlaylistSubmit = () => {
+    fetchData(`users/${user.id}/playlists`, 'POST', JSON.stringify(createPlaylistFormInput))
+      .then(() => {
+        return fetchData('me/playlists')
+          .then((playlists) => setPlaylists(playlists))
+          .catch((error) => setPlaylistsError(error))
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setView('results'))
+  }
+
   const handleFetchActivePlaylist = useCallback(() => {
     fetchData(`playlists/${activePlaylistId}/tracks`).then((data) => {
       setActivePlaylist(data)
@@ -282,10 +328,10 @@ export const AdvancedSearchView = () => {
             <StyledSelect
               id="playlists"
               name="playlists"
-              onChange={({ target }) => setActivePlaylistId(target.value)}
-              value={activePlaylistId}
+              onChange={({ target }) => handleSetActivePlaylistId(target.value)}
+              value={activePlaylistId || ''}
             >
-              <option disabled selected>
+              <option disabled value="">
                 Select a playlist
               </option>
               {!!ownedPlaylists &&
@@ -294,6 +340,7 @@ export const AdvancedSearchView = () => {
                     {item.name}
                   </option>
                 ))}
+              <option value="_new_">-New playlist-</option>
             </StyledSelect>
             <Button onClick={() => setView('search')}>Search Again</Button>
           </ResultsHeader>
@@ -319,6 +366,45 @@ export const AdvancedSearchView = () => {
             <NoResultsMessage>No Results. Please modify your search criteria and try again.</NoResultsMessage>
           )}
         </ResultsContainer>
+      )}
+      {view === 'createPlaylist' && (
+        <StyledCard>
+          <CloseButton onClick={() => setView('results')} isWhite />
+          {console.log({ createPlaylistFormInput })}
+          <Card.Header>Create new playlist</Card.Header>
+          <CreatePlaylistForm>
+            <Input
+              placeholder="Playlist name"
+              value={createPlaylistFormInput?.name || ''}
+              onChange={({ target }) => setCreatePlaylistFormInput({ ...createPlaylistFormInput, name: target.value })}
+              name="name"
+            />
+            <Input
+              placeholder="Playlist description"
+              value={createPlaylistFormInput?.description || ''}
+              onChange={({ target }) =>
+                setCreatePlaylistFormInput({ ...createPlaylistFormInput, description: target.value })
+              }
+              name="description"
+            />
+            <PrivacySelect
+              value={createPlaylistFormInput?.public || ''}
+              onChange={({ target }) =>
+                setCreatePlaylistFormInput({ ...createPlaylistFormInput, public: target.value })
+              }
+              name="public"
+            >
+              <option disabled value="">
+                Privacy
+              </option>
+              <option value={false}>Public</option>
+              <option value={true}>Private</option>
+            </PrivacySelect>
+            <Button disabled={!createPlaylistFormInput?.name} onClick={() => handleCreatePlaylistSubmit()}>
+              Create
+            </Button>
+          </CreatePlaylistForm>
+        </StyledCard>
       )}
       <InfoPanel
         isOpen={isInfoPanelOpen}
