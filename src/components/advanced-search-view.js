@@ -267,7 +267,7 @@ export const AdvancedSearchView = () => {
       if (data?.next) handleFetchActivePlaylistRemaining(data)
       else setActivePlaylist(data)
     })
-  }, [activePlaylistId, fetchData, setActivePlaylist])
+  }, [activePlaylistId, fetchData, setActivePlaylist, handleFetchActivePlaylistRemaining])
 
   const handleFetchActivePlaylistRemaining = (data) => {
     const { next, items: previousItems } = data
