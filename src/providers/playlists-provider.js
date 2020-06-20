@@ -25,7 +25,7 @@ export const UserPlaylistsProvider = ({ children }) => {
       fetchData('me/playlists?limit=50').then((playlistsObject) => {
         if (playlistsObject?.next) handleFetchRemainingPlaylists(playlistsObject, userId)
         else {
-          const filteredPlaylists = getOwnedPlaylists(playlistsObject?.items || [], userId || user.id)
+          const filteredPlaylists = getOwnedPlaylists(playlistsObject?.items || [], userId || user?.id)
           const newPlaylistsObject = getCleanPlaylistsObject({ ...playlistsObject, items: filteredPlaylists })
           if (newPlaylistsObject?.items?.length) {
             cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
@@ -41,14 +41,17 @@ export const UserPlaylistsProvider = ({ children }) => {
     const { next, items: previousItems } = playlistsObject
     return fetchData(`me/playlists/?${next.replace(/.*[?|#]/, '')}`).then((newData) => {
       if (newData?.next)
-        handleFetchRemainingPlaylists({
-          ...newData,
-          items: [...previousItems, ...newData?.items],
-        })
+        handleFetchRemainingPlaylists(
+          {
+            ...newData,
+            items: [...previousItems, ...newData?.items],
+          },
+          userId
+        )
       else {
         const newPlaylistsObject = getCleanPlaylistsObject({
           ...newData,
-          items: getOwnedPlaylists([...previousItems, ...newData?.items], userId || user.id),
+          items: getOwnedPlaylists([...previousItems, ...newData?.items], userId || user?.id),
         })
         if (newPlaylistsObject?.items?.length) {
           cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
@@ -138,7 +141,7 @@ export const UserPlaylistsProvider = ({ children }) => {
     return fetchData(`users/${user.id}/playlists`, 'POST', JSON.stringify(createPlaylistFormInput))
       .then(({ id }) => {
         setActivePlaylistId(id)
-        return handleFetchPlaylists()
+        return handleFetchPlaylists(user.id)
       })
       .catch((error) => {
         setCreatingNewPlaylistError(error)

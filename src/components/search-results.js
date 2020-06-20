@@ -97,7 +97,7 @@ export const SearchResults = ({
   saveSongToPlaylist,
   handlePlayPauseSong,
   activePlaylistId,
-  isSavingToPlaylist,
+  isUpdatingPlaylist,
   setView,
   handleSearchSimilarSong,
   removeSongFromPlaylist,
@@ -175,7 +175,7 @@ export const SearchResults = ({
               isPlaying={isPlaying && song.id === activeSong?.id}
               saveSongToPlaylist={saveSongToPlaylist}
               activePlaylistId={activePlaylistId}
-              isSavingToPlaylist={isSavingToPlaylist === song.id}
+              isUpdatingPlaylist={isUpdatingPlaylist === song.id}
               isSaved={savedTracks.some((id) => id === song.id)}
               handleSearchSimilarSong={handleSearchSimilarSong}
               removeSongFromPlaylist={removeSongFromPlaylist}

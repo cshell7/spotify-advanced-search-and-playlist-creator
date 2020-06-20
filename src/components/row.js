@@ -103,7 +103,7 @@ export const Row = ({
   saveSongToPlaylist,
   activePlaylistId,
   index,
-  isSavingToPlaylist,
+  isUpdatingPlaylist,
   isSaved,
   handleSearchSimilarSong,
   removeSongFromPlaylist,
@@ -155,12 +155,12 @@ export const Row = ({
       <TableCell isOdd={isOdd(index)} centered>
         {isSaved ? (
           <AddedIcon
-            isLoading={isSavingToPlaylist}
+            isLoading={isUpdatingPlaylist}
             onClick={() => !!activePlaylistId && removeSongFromPlaylist(uri, id)}
           />
         ) : (
           <AddButton
-            isLoading={isSavingToPlaylist}
+            isLoading={isUpdatingPlaylist}
             disabled={!activePlaylistId}
             onClick={() => !!activePlaylistId && saveSongToPlaylist(uri, id)}
           />

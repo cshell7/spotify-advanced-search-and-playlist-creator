@@ -34,8 +34,9 @@ const getCleanedArtists = (artists) =>
   artists.map(({ name }) => ({
     name,
   }))
+
 export const getCleanedTracks = (tracks) =>
-  tracks.map((artists, duration_ms, explicit, id, name, popularity, preview_url, uri, audioFeatures) => ({
+  tracks.map(({ artists, duration_ms, explicit, id, name, popularity, preview_url, uri, audioFeatures }) => ({
     artists: getCleanedArtists(artists),
     duration_ms,
     explicit,

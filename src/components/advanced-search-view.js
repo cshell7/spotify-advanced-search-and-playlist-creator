@@ -135,7 +135,15 @@ export const AdvancedSearchView = () => {
   const isInitialLoad = [isUserLoading, isGenresLoading, isPlaylistsLoading].some(Boolean)
   // TODO handle sad paths
   const hasError = [userError, playlistsError, genresError, songError].some(Boolean)
-  if (hasError) console.log({ hasError })
+  if (hasError) console.error({ hasError })
+
+  const songsNotInPlaylist = searchResults
+    .map(({ uri }) => uri)
+    .filter((song) => {
+      return !activePlaylist?.items.some((track) => {
+        return track?.uri === song
+      })
+    })
 
   const [currentFilter, setCurrentFilter] = useState()
   useEffect(() => {
@@ -264,14 +272,9 @@ export const AdvancedSearchView = () => {
                   <option value="_new_">-New playlist-</option>
                 </PlaylistSelect>
                 <AddAllButton
-                  disabled={!searchResults?.length || !activePlaylistId}
+                  disabled={!searchResults?.length || !activePlaylistId || !songsNotInPlaylist?.length}
                   onClick={() => {
-                    const songs = searchResults
-                      .map(({ uri }) => uri)
-                      .filter((song) => {
-                        return !activePlaylist.items.some(({ track }) => track?.uri === song)
-                      })
-                    saveSongToPlaylist(songs.join(','))
+                    saveSongToPlaylist(songsNotInPlaylist.join(','))
                   }}
                 >
                   Add all songs
