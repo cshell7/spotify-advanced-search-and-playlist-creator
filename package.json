@@ -1,6 +1,6 @@
 {
   "name": "spotify-advanced-search-and-playlist-creator",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "An advanced search and playlist creation tool for Spotify.",
   "private": true,
   "homepage": "http://advancedsearchforspotify.info",
