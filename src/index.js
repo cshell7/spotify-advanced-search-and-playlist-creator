@@ -22,16 +22,17 @@ const clientId = process.env.REACT_APP_CLIENT_ID
 const AppContainer = styled.div`
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 `
 
 const Main = styled.main`
+  padding: 64px 0 24px;
   display: flex;
   flex: 1 0 auto;
-  overflow: hidden;
-  max-height: calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px);
+  // max-height: calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px);
 `
 
 ReactDOM.render(

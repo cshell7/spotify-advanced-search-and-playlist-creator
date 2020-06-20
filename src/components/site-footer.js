@@ -6,6 +6,9 @@ import { colors, createdByLink, gitHubLink, feedbackLink, FOOTER_HEIGHT } from '
 import gitHubIcon from '../img/github-icon.png'
 
 const StyledSiteFooter = styled.footer`
+  position: fixed;
+  bottom: 0;
+  left: 0;
   display: flex;
   width: 100vw;
   height: ${FOOTER_HEIGHT}px;

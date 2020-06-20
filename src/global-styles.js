@@ -16,7 +16,6 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
   html, body, #root {
-    overflow: hidden;
     width: 100vw;
     height: 100vh;
   }

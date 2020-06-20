@@ -7,6 +7,9 @@ import spotifyLogo from '../img/spotify-logo.png'
 import { DynamicFontSize } from './dynamic-font-size'
 
 const StyledSiteHeader = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   width: 100vw;
   height: ${HEADER_HEIGHT}px;

@@ -7,7 +7,7 @@ import { useSpotityUserData } from '../providers/user-data-provider'
 import { useUserPlaylists } from '../providers/playlists-provider'
 import { useSpotityGenres } from '../providers/genres-provider'
 
-import { colors, HEADER_HEIGHT, FOOTER_HEIGHT } from '../consts'
+import { colors, breakpoints, HEADER_HEIGHT, FOOTER_HEIGHT } from '../consts'
 
 import { getCleanedTracks } from '../utils'
 
@@ -37,7 +37,6 @@ export const StyledCard = styled(Card)`
   width: 800px;
   max-width: calc(100vw - 32px);
   margin-top: 24px;
-  overflow-x: hidden;
   overflow-y: scroll;
   max-height: calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px - 40px);
 `
@@ -88,6 +87,11 @@ const ResultsHeader = styled.div`
   ${Button}, ${AddAllButton}, ${PlaylistSelect} {
     height: 24px;
     padding: 4px 8px;
+
+    @media (max-width: ${breakpoints.sm}px) {
+      font-size: 12px;
+      padding: 4px;
+    }
   }
 
   ${Button} {
