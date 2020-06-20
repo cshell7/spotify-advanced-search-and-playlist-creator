@@ -1,5 +1,4 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
 import cookies from 'js-cookie'
 import { useSpotityAPI } from '@c-shell/spotify-api-hook'
 

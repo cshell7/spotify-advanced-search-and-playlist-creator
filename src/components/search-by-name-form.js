@@ -23,7 +23,7 @@ export const SearchByNameForm = ({ setAreSongsLoading, setView, setSearchResults
 
   const handleSearchByName = () => {
     setAreSongsLoading(true)
-    return fetchData(`search?q=${encodeURIComponent(searchInputValue)}&type=track&limit=50`)
+    return fetchData(`search?q=${encodeURIComponent(searchInputValue)}&type=track&limit=25`)
       .then(({ tracks }) => {
         const songIds = tracks.items.map(({ id }) => id)
         return fetchData(`audio-features?ids=${songIds}`).then(({ audio_features: audioFeatures }) => {

@@ -35,21 +35,17 @@ const getCleanedArtists = (artists) =>
     name,
   }))
 export const getCleanedTracks = (tracks) =>
-  tracks.map((track) => {
-    // console.log({ track })
-    const { artists, duration_ms, explicit, id, name, popularity, preview_url, uri, audioFeatures, ...rest } = track
-    return {
-      artists: getCleanedArtists(artists),
-      duration_ms,
-      explicit,
-      id,
-      name,
-      popularity,
-      preview_url,
-      uri,
-      audioFeatures: getCleanedAudioFeatures(audioFeatures),
-    }
-  })
+  tracks.map((artists, duration_ms, explicit, id, name, popularity, preview_url, uri, audioFeatures) => ({
+    artists: getCleanedArtists(artists),
+    duration_ms,
+    explicit,
+    id,
+    name,
+    popularity,
+    preview_url,
+    uri,
+    audioFeatures: getCleanedAudioFeatures(audioFeatures),
+  }))
 
 // getCleanPlaylistsObject
 const getCleanedPlaylists = (rawPlaylists) =>
@@ -67,13 +63,16 @@ export const getCleanPlaylistsObject = ({ total, next, items }) => ({
 
 // getCleanedPlaylistObject
 const getCleanedPlaylistTracks = (playlistTracks) =>
-  playlistTracks.map(({ name, id, uri }) => ({
-    name,
-    id,
-    uri,
-  }))
+  playlistTracks.map(({ track = {} }) => {
+    const { name, id, uri } = track
+    return {
+      name,
+      id,
+      uri,
+    }
+  })
 export const getCleanedPlaylistObject = ({ items, next, total }) => ({
-  items,
+  items: getCleanedPlaylistTracks(items),
   next,
   total,
 })

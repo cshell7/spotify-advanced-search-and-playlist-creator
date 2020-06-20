@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useSpotityAPI } from '@c-shell/spotify-api-hook'
 import cookies from 'js-cookie'
 import styled from 'styled-components'
@@ -118,7 +118,7 @@ export const AdvancedSearchView = () => {
     removeSongFromPlaylist,
   } = useUserPlaylists()
   const { genres, isLoading: isGenresLoading, error: genresError } = useSpotityGenres()
-  const savedTracks = activePlaylist?.items.map(({ track }) => track.id) || []
+  const savedTracks = activePlaylist?.items.map(({ id }) => id) || []
 
   const handleSetActivePlaylistId = (id) => {
     if (id === '_new_') setView('createPlaylist')
@@ -134,7 +134,8 @@ export const AdvancedSearchView = () => {
 
   const isInitialLoad = [isUserLoading, isGenresLoading, isPlaylistsLoading].some(Boolean)
   // TODO handle sad paths
-  // const hasError = [userError, playlistsError, genresError, songError].some(Boolean)
+  const hasError = [userError, playlistsError, genresError, songError].some(Boolean)
+  if (hasError) console.log({ hasError })
 
   const [currentFilter, setCurrentFilter] = useState()
   useEffect(() => {
@@ -142,7 +143,7 @@ export const AdvancedSearchView = () => {
   }, [areSongsLoading])
 
   const handleSortSongs = (filter) => {
-    let filteredSongs = searchResults
+    let filteredSongs = [...searchResults]
     if (filter === currentFilter) {
       filteredSongs = filteredSongs.reverse()
     } else {

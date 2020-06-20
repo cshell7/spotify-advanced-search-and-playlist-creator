@@ -62,7 +62,7 @@ export const UserPlaylistsProvider = ({ children }) => {
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false))
     }
-  }, [user, playlistsObject, error, isAuthed, fetchData])
+  }, [user, playlistsObject, error, isAuthed, fetchData, handleFetchPlaylists])
 
   const [activePlaylistId, setActivePlaylistId] = useState()
   const [activePlaylist, setActivePlaylist] = useState()

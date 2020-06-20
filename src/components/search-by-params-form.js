@@ -145,7 +145,7 @@ export const SearchByParamsForm = ({
       ...(!!tempo && { target_tempo: tempo }),
       ...(!!mode && { target_mode: mode }),
       ...(!!key && { target_key: key }),
-      limit: 50,
+      limit: 25,
       market: 'US',
     }
     return fetchData(`recommendations${objectToQueryParamString(params)}`)
