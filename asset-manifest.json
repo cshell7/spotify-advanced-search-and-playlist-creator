@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.js": "/static/js/main.4856d20b.chunk.js",
-    "main.js.map": "/static/js/main.4856d20b.chunk.js.map",
+    "main.js": "/static/js/main.073ec38e.chunk.js",
+    "main.js.map": "/static/js/main.073ec38e.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.d3d7bd4e.js",
     "runtime-main.js.map": "/static/js/runtime-main.d3d7bd4e.js.map",
-    "static/js/2.a9813eaf.chunk.js": "/static/js/2.a9813eaf.chunk.js",
-    "static/js/2.a9813eaf.chunk.js.map": "/static/js/2.a9813eaf.chunk.js.map",
+    "static/js/2.996da237.chunk.js": "/static/js/2.996da237.chunk.js",
+    "static/js/2.996da237.chunk.js.map": "/static/js/2.996da237.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.a7041a67274e9a0cc3ccaf52f694a8b3.js": "/precache-manifest.a7041a67274e9a0cc3ccaf52f694a8b3.js",
+    "precache-manifest.f1566ccda0ff2f8850c9052b3f7fd3ad.js": "/precache-manifest.f1566ccda0ff2f8850c9052b3f7fd3ad.js",
     "service-worker.js": "/service-worker.js",
-    "static/js/2.a9813eaf.chunk.js.LICENSE.txt": "/static/js/2.a9813eaf.chunk.js.LICENSE.txt",
+    "static/js/2.996da237.chunk.js.LICENSE.txt": "/static/js/2.996da237.chunk.js.LICENSE.txt",
     "static/media/spotify-logo.png": "/static/media/spotify-logo.31bad8d4.png"
   },
   "entrypoints": [
     "static/js/runtime-main.d3d7bd4e.js",
-    "static/js/2.a9813eaf.chunk.js",
-    "static/js/main.4856d20b.chunk.js"
+    "static/js/2.996da237.chunk.js",
+    "static/js/main.073ec38e.chunk.js"
   ]
 }
