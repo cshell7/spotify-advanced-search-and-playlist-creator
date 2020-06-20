@@ -21,21 +21,23 @@ export const UserPlaylistsProvider = ({ children }) => {
   )
   const [error, setError] = useState()
   const handleFetchPlaylists = useCallback(
-    () =>
+    (userId) =>
       fetchData('me/playlists?limit=50').then((playlistsObject) => {
-        if (playlistsObject?.next) handleFetchRemainingPlaylists(playlistsObject)
+        if (playlistsObject?.next) handleFetchRemainingPlaylists(playlistsObject, userId)
         else {
-          const filteredPlaylists = getOwnedPlaylists(playlistsObject?.items || [], user?.id)
+          const filteredPlaylists = getOwnedPlaylists(playlistsObject?.items || [], userId)
           const newPlaylistsObject = getCleanPlaylistsObject({ ...playlistsObject, items: filteredPlaylists })
-          cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
-            expires: ONE_HOUR,
-          })
+          if (newPlaylistsObject?.items?.length) {
+            cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
+              expires: ONE_HOUR,
+            })
+          }
           setPlaylistsObject(newPlaylistsObject)
         }
       }),
     [fetchData, setPlaylistsObject]
   )
-  const handleFetchRemainingPlaylists = (playlistsObject) => {
+  const handleFetchRemainingPlaylists = (playlistsObject, userId) => {
     const { next, items: previousItems } = playlistsObject
     return fetchData(`me/playlists/?${next.replace(/.*[?|#]/, '')}`).then((newData) => {
       if (newData?.next)
@@ -46,19 +48,21 @@ export const UserPlaylistsProvider = ({ children }) => {
       else {
         const newPlaylistsObject = getCleanPlaylistsObject({
           ...newData,
-          items: getOwnedPlaylists([...previousItems, ...newData?.items], user?.id),
+          items: getOwnedPlaylists([...previousItems, ...newData?.items], userId),
         })
-        cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
-          expires: ONE_HOUR,
-        })
+        if (newPlaylistsObject?.items?.length) {
+          cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
+            expires: ONE_HOUR,
+          })
+        }
         setPlaylistsObject(newPlaylistsObject)
       }
     })
   }
   useEffect(() => {
-    if (isAuthed && user && !playlistsObject && !error) {
+    if (isAuthed && user?.id && !playlistsObject && !error) {
       setIsLoading(true)
-      handleFetchPlaylists()
+      handleFetchPlaylists(user.id)
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false))
     }
