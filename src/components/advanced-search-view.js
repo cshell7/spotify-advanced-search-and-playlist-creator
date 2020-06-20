@@ -7,7 +7,7 @@ import { useSpotityUserData } from '../providers/user-data-provider'
 import { useUserPlaylists } from '../providers/playlists-provider'
 import { useSpotityGenres } from '../providers/genres-provider'
 
-import { colors, breakpoints, HEADER_HEIGHT, FOOTER_HEIGHT } from '../consts'
+import { colors, breakpoints, HEADER_HEIGHT } from '../consts'
 
 import { getCleanedTracks } from '../utils'
 
