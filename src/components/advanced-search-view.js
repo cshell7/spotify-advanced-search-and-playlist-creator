@@ -125,6 +125,8 @@ export const AdvancedSearchView = () => {
     else setActivePlaylistId(id)
   }
 
+  console.log({ playlists })
+
   const [areSongsLoading, setAreSongsLoading] = useState(false)
   const [songError, setSongError] = useState()
   const [searchResults, setSearchResults] = useState([])

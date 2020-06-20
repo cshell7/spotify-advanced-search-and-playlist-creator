@@ -25,7 +25,7 @@ export const UserPlaylistsProvider = ({ children }) => {
       fetchData('me/playlists?limit=50').then((playlistsObject) => {
         if (playlistsObject?.next) handleFetchRemainingPlaylists(playlistsObject, userId)
         else {
-          const filteredPlaylists = getOwnedPlaylists(playlistsObject?.items || [], userId)
+          const filteredPlaylists = getOwnedPlaylists(playlistsObject?.items || [], userId || user.id)
           const newPlaylistsObject = getCleanPlaylistsObject({ ...playlistsObject, items: filteredPlaylists })
           if (newPlaylistsObject?.items?.length) {
             cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
@@ -48,7 +48,7 @@ export const UserPlaylistsProvider = ({ children }) => {
       else {
         const newPlaylistsObject = getCleanPlaylistsObject({
           ...newData,
-          items: getOwnedPlaylists([...previousItems, ...newData?.items], userId),
+          items: getOwnedPlaylists([...previousItems, ...newData?.items], userId || user.id),
         })
         if (newPlaylistsObject?.items?.length) {
           cookies.set('playlistsObject', JSON.stringify(newPlaylistsObject), {
@@ -138,7 +138,7 @@ export const UserPlaylistsProvider = ({ children }) => {
     return fetchData(`users/${user.id}/playlists`, 'POST', JSON.stringify(createPlaylistFormInput))
       .then(({ id }) => {
         setActivePlaylistId(id)
-        return handleFetchPlaylists(user.id)
+        return handleFetchPlaylists()
       })
       .catch((error) => {
         setCreatingNewPlaylistError(error)
