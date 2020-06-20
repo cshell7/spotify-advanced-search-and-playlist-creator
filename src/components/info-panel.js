@@ -49,6 +49,10 @@ const Label = styled.h2`
 const Description = styled.p`
   font-size: ${({ large }) => (large ? 16 : 14)}px;
   margin: 0;
+
+  & + & {
+    margin-top: 8px;
+  }
 `
 
 const Divider = styled.div`
@@ -123,6 +127,12 @@ export const InfoPanel = ({ isOpen, close = () => {} }) => {
           'genre' and you can pick up to three of those(Typically selecting just 1 is best). You can click on the column
           headers to sort the results. Select a playlist (or create a new one) and then press the '+' button to add that
           song to your playlist. The results table is scrollable both horizontally and vertically.
+        </Description>
+        <Description>
+          For example if you wanted some slow sad country music you could do: genre 'country', valence 0.0, energy 0.0.
+          Or for some background rock music without much singing you could do: genre 'rock', instrumentalness 1.0,
+          speechiness 0.0. For some upbeat gospel singing you could do: genra 'gospel', valence 1.0, instrumentalness
+          0.0.
         </Description>
         <Divider />
         <ReAuthContainer>
