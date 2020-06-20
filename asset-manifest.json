@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/static/js/main.3a8e4dbb.chunk.js",
-    "main.js.map": "/static/js/main.3a8e4dbb.chunk.js.map",
+    "main.js": "/static/js/main.4fdfb137.chunk.js",
+    "main.js.map": "/static/js/main.4fdfb137.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.d3d7bd4e.js",
     "runtime-main.js.map": "/static/js/runtime-main.d3d7bd4e.js.map",
     "static/js/2.996da237.chunk.js": "/static/js/2.996da237.chunk.js",
     "static/js/2.996da237.chunk.js.map": "/static/js/2.996da237.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.71d244cfcc036bed0da145326b53adf7.js": "/precache-manifest.71d244cfcc036bed0da145326b53adf7.js",
+    "precache-manifest.d9143d3ccdcd8af53accc68c3b54cb27.js": "/precache-manifest.d9143d3ccdcd8af53accc68c3b54cb27.js",
     "service-worker.js": "/service-worker.js",
     "static/js/2.996da237.chunk.js.LICENSE.txt": "/static/js/2.996da237.chunk.js.LICENSE.txt",
     "static/media/spotify-logo.png": "/static/media/spotify-logo.31bad8d4.png"
@@ -15,6 +15,6 @@
   "entrypoints": [
     "static/js/runtime-main.d3d7bd4e.js",
     "static/js/2.996da237.chunk.js",
-    "static/js/main.3a8e4dbb.chunk.js"
+    "static/js/main.4fdfb137.chunk.js"
   ]
 }
