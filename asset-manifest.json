@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/static/js/main.bbe12486.chunk.js",
-    "main.js.map": "/static/js/main.bbe12486.chunk.js.map",
+    "main.js": "/static/js/main.1b4b4f93.chunk.js",
+    "main.js.map": "/static/js/main.1b4b4f93.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.d3d7bd4e.js",
     "runtime-main.js.map": "/static/js/runtime-main.d3d7bd4e.js.map",
     "static/js/2.996da237.chunk.js": "/static/js/2.996da237.chunk.js",
     "static/js/2.996da237.chunk.js.map": "/static/js/2.996da237.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.5c25cb19aead47122b301f2f3293a3d4.js": "/precache-manifest.5c25cb19aead47122b301f2f3293a3d4.js",
+    "precache-manifest.7abcff685163f112e452724a969f61f0.js": "/precache-manifest.7abcff685163f112e452724a969f61f0.js",
     "service-worker.js": "/service-worker.js",
     "static/js/2.996da237.chunk.js.LICENSE.txt": "/static/js/2.996da237.chunk.js.LICENSE.txt",
     "static/media/spotify-logo.png": "/static/media/spotify-logo.31bad8d4.png"
@@ -15,6 +15,6 @@
   "entrypoints": [
     "static/js/runtime-main.d3d7bd4e.js",
     "static/js/2.996da237.chunk.js",
-    "static/js/main.bbe12486.chunk.js"
+    "static/js/main.1b4b4f93.chunk.js"
   ]
 }
