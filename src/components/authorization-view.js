@@ -5,6 +5,8 @@ import { Card } from './card'
 import { AuthButton } from './auth-button'
 
 const StyledCard = styled(Card)`
+  align-self: flex-start;
+
   ${AuthButton} {
     margin: 0 auto;
   }

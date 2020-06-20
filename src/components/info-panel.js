@@ -2,20 +2,20 @@ import React, { Fragment } from 'react'
 import styled from 'styled-components'
 
 import { AuthButton } from './auth-button'
-import { colors, audioFeaturesDescriptions } from '../consts'
+import { colors, audioFeaturesDescriptions, HEADER_HEIGHT, FOOTER_HEIGHT } from '../consts'
 import infoIcon from '../img/info-icon.png'
 import { CloseButton } from './close-button'
 import { PlayPauseButton, AddButton, SimilarsButton, ExplicitIcon } from './row'
 import playIcon from '../img//play-icon.png'
 
 const Panel = styled.div`
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: ${HEADER_HEIGHT}px;
   right: 0;
   width: 400px;
   max-width: calc(100vw - 80px);
-  height: 100%;
-  padding: 32px 16px;
+  height: calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px);
+  padding: 32px 16px 80px;
   color: ${colors.spotifyBlack};
   background: ${colors.white};
   border-left: 4px solid ${colors.gray};

@@ -16,6 +16,7 @@ const StyledSiteHeader = styled.header`
   padding: 0 48px 0 16px;
   border-bottom: 8px solid ${colors.spotifyGreen};
   background-color: ${colors.spotifyBlack};
+  z-index: 2;
 `
 
 const SpotifyLogo = styled.img.attrs(() => ({

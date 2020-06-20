@@ -28,6 +28,10 @@ const CreatedBy = styled.a.attrs(() => ({
   color: ${colors.white};
   font-size: 12px;
   text-decoration: none;
+
+  span {
+    color: ${colors.spotifyGreen};
+  }
 `
 const GitHubLink = styled.a.attrs(() => ({
   href: gitHubLink,
@@ -58,7 +62,9 @@ export const SiteFooter = () => {
   return (
     <StyledSiteFooter>
       <FeedbackLink>Have feedback?</FeedbackLink>
-      <CreatedBy>Created by Calvin Shell</CreatedBy>
+      <CreatedBy>
+        Created by <span>Calvin Shell</span>
+      </CreatedBy>
       <GitHubLink>
         <GitHubLogo />
       </GitHubLink>

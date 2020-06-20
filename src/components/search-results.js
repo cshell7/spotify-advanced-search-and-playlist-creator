@@ -13,7 +13,6 @@ const TableHeader = styled.div`
 `
 const TableBody = styled.div`
   width: ${TABLE_WIDTH}px;
-  height: calc(100vh - 64px - 64px - 64px);
   font-size: 16px;
 
   & > div {
@@ -25,7 +24,6 @@ const TableBody = styled.div`
 const Table = styled.div`
   position: relative;
   overflow-x: scroll;
-  height: calc(100vh - 64px - 64px);
   width: ${TABLE_WIDTH + 2}px;
   max-width: calc(100vw - 2px);
   margin: 0 auto;

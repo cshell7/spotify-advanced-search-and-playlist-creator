@@ -29,16 +29,15 @@ const AppContainer = styled.div`
 `
 
 const Main = styled.main`
-  padding: 64px 0 24px;
+  padding: ${HEADER_HEIGHT}px 0 ${FOOTER_HEIGHT}px;
   display: flex;
   flex: 1 0 auto;
-  // max-height: calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px);
 `
 
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
-    <AppContainer>
+    <AppContainer id="container">
       <BrowserRouter>
         <SpotifyAPIProvider clientId={clientId}>
           <SpotifyUserDataProvider>

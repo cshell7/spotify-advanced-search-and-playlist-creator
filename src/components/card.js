@@ -2,12 +2,14 @@ import styled from 'styled-components'
 import { colors } from '../consts'
 
 export const Card = styled.div`
-  margin: auto;
+  margin: 0 auto;
   padding: 24px;
   border: 1px solid ${colors.white};
   border-radius: 4px;
   width: 480px;
   background-color: ${colors.spotifyBlack};
+  margin-bottom: 32px;
+  align-self: flex-start;
 `
 
 const CardHeader = styled.h3`

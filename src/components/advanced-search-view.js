@@ -30,6 +30,7 @@ const StyledInfoPannelButton = styled(InfoPanelButton)`
   position: fixed;
   top: 12px;
   right: 12px;
+  z-index: 10;
 `
 
 export const StyledCard = styled(Card)`
@@ -38,7 +39,6 @@ export const StyledCard = styled(Card)`
   max-width: calc(100vw - 32px);
   margin-top: 24px;
   overflow-y: scroll;
-  max-height: calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px - 40px);
 `
 
 const Tabs = styled.div`
@@ -135,6 +135,11 @@ export const AdvancedSearchView = () => {
   const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(!cookies.get('hasViewedInfoPanel'))
   const [view, setView] = useState('search')
   const [searchView, setSearchView] = useState('byParams')
+
+  useEffect(() => {
+    if (isInfoPanelOpen) document.getElementById('container').style.overflow = 'hidden'
+    else document.getElementById('container').style.overflow = null
+  }, [isInfoPanelOpen])
 
   const isInitialLoad = [isUserLoading, isGenresLoading, isPlaylistsLoading].some(Boolean)
   // TODO handle sad paths
