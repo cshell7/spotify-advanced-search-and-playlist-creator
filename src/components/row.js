@@ -182,7 +182,7 @@ export const Row = ({
         <small>BPM</small>
       </TableCell>
       <TableCell isOdd={isOdd(index)}>
-        <StatBar percentage={popularity} fadeRate={0.9} />
+        <StatBar percentage={popularity} />
       </TableCell>
       <TableCell isOdd={isOdd(index)}>
         <StatBar percentage={valence * 100} />

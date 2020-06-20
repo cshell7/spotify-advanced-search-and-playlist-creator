@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { colors } from '../consts'
 import { Row, ExplicitIcon } from './row'
 
-const TABLE_WIDTH = 40 * 3 + 216 + 24 + 148 + 54 + 60 + 70 * 8 + 48 + 54 + 56 + 32
+const TABLE_WIDTH = 40 * 3 + 216 + 24 + 148 + 60 + 60 + 78 * 8 + 48 + 60 + 60 + 40
 
 const TableHeader = styled.div`
   height: 40px;
@@ -25,7 +25,7 @@ const Table = styled.div`
   position: relative;
   overflow-x: scroll;
   width: ${TABLE_WIDTH + 2}px;
-  max-width: calc(100vw - 2px);
+  max-width: calc(100vw - 4px);
   margin: 0 auto;
   border-right: 1px solid ${colors.gray};
   border-left: 1px solid ${colors.gray};
@@ -34,8 +34,8 @@ const Table = styled.div`
     display: grid;
     grid-template-columns:
       repeat(3, 40px [controls])
-      [name] 216px [explicit] 24px [artist] 148px [duration] 54px [bpm] 60px repeat(8, 70px [stats])
-      [key] 48px [db] 54px [mod] 56px [time] 32px;
+      [name] 216px [explicit] 24px [artist] 148px [duration] 60px [bpm] 60px repeat(8, 78px [stats])
+      [key] 48px [db] 60px [mod] 60px [time] 40px;
   }
 `
 
@@ -50,10 +50,20 @@ const HeaderItem = styled.div`
     white-space: nowrap;
     margin: 0;
     position: absolute;
-    bottom: 2px;
+    bottom: 4px;
     left: 0;
     transform-origin: bottom left;
     transform: rotate(-13deg);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    height: 4px;
+    width: 1px;
+    background-color: ${colors.gray};
   }
 `
 
@@ -61,9 +71,14 @@ const HeaderItemControls = styled(HeaderItem)`
   grid-column: span 3;
 
   p {
-    bottom: 4px;
+    bottom: 8px;
+    margin: 0;
     left: 50%;
     transform: rotate(-13deg) translateX(-50%);
+  }
+
+  &::before {
+    left: 50%;
   }
 `
 

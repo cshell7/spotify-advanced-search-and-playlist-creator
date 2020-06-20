@@ -17,6 +17,7 @@ const StyledSiteFooter = styled.footer`
   padding: 0 16px;
   border-top: 1px solid ${colors.gray};
   background-color: ${colors.spotifyBlack};
+  z-index: 20;
 `
 
 const CreatedBy = styled.a.attrs(() => ({

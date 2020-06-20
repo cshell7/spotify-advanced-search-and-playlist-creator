@@ -73,9 +73,12 @@ const AddAllButton = styled(Button)``
 
 const ResultsContainer = styled.div`
   width: 100%;
+  padding-top: 40px;
 `
 
 const ResultsHeader = styled.div`
+  position: fixed;
+  top: ${HEADER_HEIGHT}px;
   display: flex;
   align-items: center;
   height: 40px;
@@ -83,6 +86,7 @@ const ResultsHeader = styled.div`
   padding: 0 16px;
   background-color: ${colors.spotifyBlack};
   border-bottom: 1px solid ${colors.gray};
+  z-index:1;
 
   ${Button}, ${AddAllButton}, ${PlaylistSelect} {
     height: 24px;
@@ -108,7 +112,7 @@ const NoResultsMessage = styled.p`
 `
 
 export const AdvancedSearchView = () => {
-  const { fetchData } = useSpotityAPI()
+  const { fetchData, isLoading } = useSpotityAPI()
   const { error: userError, isLoading: isUserLoading } = useSpotityUserData()
   const {
     playlists,
@@ -137,11 +141,14 @@ export const AdvancedSearchView = () => {
   const [searchView, setSearchView] = useState('byParams')
 
   useEffect(() => {
-    if (isInfoPanelOpen) document.getElementById('container').style.overflow = 'hidden'
-    else document.getElementById('container').style.overflow = null
+    if (isInfoPanelOpen) document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+    else document.getElementsByTagName('body')[0].style.overflow = null
   }, [isInfoPanelOpen])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [view])
 
-  const isInitialLoad = [isUserLoading, isGenresLoading, isPlaylistsLoading].some(Boolean)
+  const isInitialLoad = [isLoading, isUserLoading, isGenresLoading, isPlaylistsLoading].some(Boolean)
   // TODO handle sad paths
   const hasError = [userError, playlistsError, genresError, songError].some(Boolean)
   if (hasError) console.error({ hasError })
@@ -196,6 +203,9 @@ export const AdvancedSearchView = () => {
   audioObj.current.addEventListener('playing', () => setIsPlaying(true))
   audioObj.current.addEventListener('pause', () => setIsPlaying(false))
   audioObj.current.addEventListener('ended', () => setIsPlaying(false))
+  useEffect(() => {
+    if (areSongsLoading) audioObj.current.pause()
+  }, [areSongsLoading])
 
   const handleSearchSimilarSong = (songId) => {
     setAreSongsLoading(true)

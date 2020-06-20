@@ -69,7 +69,11 @@ export const CreatePlaylistView = ({ setView }) => {
           <option value={false}>Public</option>
           <option value={true}>Private</option>
         </PrivacySelect>
-        <Button disabled={!createPlaylistFormInput?.name || isLoading} onClick={() => handleCreatePlaylistSubmit()}>
+        {console.log(createPlaylistFormInput.public)}
+        <Button
+          disabled={!createPlaylistFormInput?.name || createPlaylistFormInput?.public === undefined || isLoading}
+          onClick={() => handleCreatePlaylistSubmit()}
+        >
           Create
         </Button>
       </CreatePlaylistForm>

@@ -10,13 +10,13 @@ import { capitalizeFirstLetter, getCleanedTracks } from '../utils'
 import { Select, Input, Button } from './form-elements'
 
 const inputsWithZeroOneRange = [
-  'acousticness',
+  'valence',
   'danceability',
   'energy',
+  'acousticness',
   'instrumentalness',
   'liveness',
   'speechiness',
-  'valence',
 ]
 
 const StyledSearchByParamsForm = styled.form`
@@ -86,7 +86,7 @@ const InputContainer = styled.div`
   }
 `
 const Label = styled.label`
-  padding-right: 8px;
+  padding-right: 16px;
 `
 
 const ButtonContainer = styled.div`
@@ -243,44 +243,6 @@ export const SearchByParamsForm = ({
           </InputContainer>
         ))}
         <InputContainer>
-          <Label>Popularity (0-100)</Label>
-          <Input
-            highlightFilled
-            outline
-            id="popularity"
-            name="popularity"
-            onChange={({ target }) =>
-              setAvancedSearchInput({
-                ...advancedSearchInput,
-                popularity: target.value,
-              })
-            }
-            value={advancedSearchInput.popularity || ''}
-            type="number"
-            min="0"
-            max="100"
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label>Time Signature</Label>
-          <Input
-            highlightFilled
-            outline
-            id="timeSignature"
-            name="timeSignature"
-            onChange={({ target }) =>
-              setAvancedSearchInput({
-                ...advancedSearchInput,
-                timeSignature: target.value,
-              })
-            }
-            value={advancedSearchInput.timeSignature || ''}
-            type="number"
-            min="1"
-            max="12"
-          />
-        </InputContainer>
-        <InputContainer>
           <Label>Tempo</Label>
           <Input
             highlightFilled
@@ -299,24 +261,23 @@ export const SearchByParamsForm = ({
           />
         </InputContainer>
         <InputContainer>
-          <Label>Mode</Label>
-          <Select
+          <Label>Popularity (0-100)</Label>
+          <Input
             highlightFilled
             outline
-            id="mode"
-            name="mode"
+            id="popularity"
+            name="popularity"
             onChange={({ target }) =>
               setAvancedSearchInput({
                 ...advancedSearchInput,
-                mode: target.value,
+                popularity: target.value,
               })
             }
-            value={advancedSearchInput.mode || ''}
-          >
-            <option value={null}></option>
-            <option value="1">Major</option>
-            <option value="0">Minor</option>
-          </Select>
+            value={advancedSearchInput.popularity || ''}
+            type="number"
+            min="0"
+            max="100"
+          />
         </InputContainer>
         <InputContainer>
           <Label>Key</Label>
@@ -339,6 +300,65 @@ export const SearchByParamsForm = ({
                 {label}
               </option>
             ))}
+          </Select>
+        </InputContainer>
+        <InputContainer>
+          <Label>Mode</Label>
+          <Select
+            highlightFilled
+            outline
+            id="mode"
+            name="mode"
+            onChange={({ target }) =>
+              setAvancedSearchInput({
+                ...advancedSearchInput,
+                mode: target.value,
+              })
+            }
+            value={advancedSearchInput.mode || ''}
+          >
+            <option value={null}></option>
+            <option value="1">Major</option>
+            <option value="0">Minor</option>
+          </Select>
+        </InputContainer>
+        <InputContainer>
+          <Label>Time Signature</Label>
+          <Input
+            highlightFilled
+            outline
+            id="timeSignature"
+            name="timeSignature"
+            onChange={({ target }) =>
+              setAvancedSearchInput({
+                ...advancedSearchInput,
+                timeSignature: target.value,
+              })
+            }
+            value={advancedSearchInput.timeSignature || ''}
+            type="number"
+            min="1"
+            max="12"
+          />
+        </InputContainer>
+        <InputContainer>
+          <Label>Mode</Label>
+          <Select
+            highlightFilled
+            outline
+            id="mode"
+            name="mode"
+            onChange={({ target }) =>
+              setAvancedSearchInput({
+                ...advancedSearchInput,
+                mode: target.value,
+              })
+            }
+            value={advancedSearchInput.mode || ''}
+          >
+            <option value={null}></option>
+            <option value="1">Major</option>
+            <option value="0">Minor</option>
           </Select>
         </InputContainer>
       </Section>

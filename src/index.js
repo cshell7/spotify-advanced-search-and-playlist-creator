@@ -20,7 +20,6 @@ import { SiteFooter } from './components/site-footer'
 const clientId = process.env.REACT_APP_CLIENT_ID
 
 const AppContainer = styled.div`
-  height: 100vh;
   width: 100vw;
   overflow-x: hidden;
   overflow-y: auto;
