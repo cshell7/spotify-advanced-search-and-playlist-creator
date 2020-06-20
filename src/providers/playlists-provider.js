@@ -138,7 +138,7 @@ export const UserPlaylistsProvider = ({ children }) => {
     return fetchData(`users/${user.id}/playlists`, 'POST', JSON.stringify(createPlaylistFormInput))
       .then(({ id }) => {
         setActivePlaylistId(id)
-        return handleFetchPlaylists()
+        return handleFetchPlaylists(user.id)
       })
       .catch((error) => {
         setCreatingNewPlaylistError(error)
